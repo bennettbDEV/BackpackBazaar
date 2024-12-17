@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from '../contexts/UserContext.jsx';
 import NavBar from "../components/Navbar.jsx";
@@ -6,13 +6,16 @@ import UserFeed from "../components/UserFeed";
 import SettingsForm from "../components/SettingsForm";
 import api from "../api";
 import { retryWithExponentialBackoff } from "../utils/retryWithExponentialBackoff";
+import { ThemeContext } from '../contexts/ThemeProvider';
 import "./styles/Settings.css";
 
 function Settings() {
+    const { theme, toggleTheme } = useContext(ThemeContext);
     const { userData, isLoading } = useUser();
     const [newUserData, setNewUserData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [blockedUsers, setBlocked] = useState([]);
+    
 
     const navigate = useNavigate();
     const userId = userData ? userData.id : -1;
@@ -75,6 +78,7 @@ function Settings() {
             <NavBar />
             <div className="settings-page">
                 <h2>Settings</h2>
+                <button className="theme-button" onClick={toggleTheme}>Dark mode toggle</button>
                 <button className="logout-button" onClick={handleLogout}>Logout</button>
                 <br></br>
                 <h3>Blocked users:</h3>

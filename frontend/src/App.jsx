@@ -1,5 +1,7 @@
 import React from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { AuthProvider } from "./contexts/AuthProvider";
+import ThemeProvider from './contexts/ThemeProvider';
 import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Home from "./pages/Home"
@@ -24,45 +26,51 @@ function RegisterAndLogout() {
 
 function App() {
   return (
+
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/register" element={<RegisterAndLogout />} />
-        <Route path="/listings/:listingId" element={<SingleListing />} />
+      <ThemeProvider>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/register" element={<RegisterAndLogout />} />
+            <Route path="/listings/:listingId" element={<SingleListing />} />
 
-        <Route path="/profile" element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        } />
-        <Route
-          path="/saved" element={
-            <ProtectedRoute>
-              <FavoritedListings />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/createListing" element={
-          <ProtectedRoute>
-            <CreateListing />
-          </ProtectedRoute>
-        } />
-        <Route path="/settings" element={
-          <ProtectedRoute>
-            <Settings /> 
-          </ProtectedRoute>
-        } />
-        <Route path="/messages" element={
-          <ProtectedRoute>
-            <Messages /> 
-          </ProtectedRoute>
-        } />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            } />
+            <Route
+              path="/saved" element={
+                <ProtectedRoute>
+                  <FavoritedListings />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/createListing" element={
+              <ProtectedRoute>
+                <CreateListing />
+              </ProtectedRoute>
+            } />
+            <Route path="/settings" element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            } />
+            <Route path="/messages" element={
+              <ProtectedRoute>
+                <Messages />
+              </ProtectedRoute>
+            } />
 
-        <Route path="*" element={<NotFound />}></Route>
-      </Routes>
+            <Route path="*" element={<NotFound />}></Route>
+          </Routes>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
+
   )
 }
 

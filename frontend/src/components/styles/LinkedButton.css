@@ -5,7 +5,7 @@
     margin-top: 15px;
     margin-bottom: 50px;
     background-color: var(--reggie-red);
-    color: white;
+    color: var(--alt-text-color);
     border: none;
     font-weight: bold;
     border-radius: 4px;

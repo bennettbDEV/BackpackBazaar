@@ -1,5 +1,6 @@
 .home-container {
     display: flex;
+    background-color: var(--bg-color);
     gap: 20px; /* Space between Filters and Listings */
     padding: 20px;
   }

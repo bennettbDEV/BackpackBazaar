@@ -3,14 +3,14 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f9f9f9;
+    background-color: var(--bg-color);
     padding: 1rem;
 }
 
 .createlisting-container {
     width: 60%; 
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: var(--bg-color);
+    border: 1px solid var(--bg-highlight);
     border-radius: 8px;
     padding: 2rem;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -26,7 +26,9 @@
 .form-input {
     width: 100%;
     padding: 0.8rem;
-    border: 1px solid #ccc;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--bg-highlight);
     border-radius: 4px;
     font-size: 1rem;
     box-sizing: border-box;
@@ -42,7 +44,7 @@
     border: none;
     border-radius: 4px;
     background-color: var(--reggie-red);
-    color: #fff;
+    color: var(--alt-text-color);
     cursor: pointer;
     transition: background-color 0.3s;
 }
@@ -87,7 +89,9 @@
 .tag {
     display: inline-flex;
     align-items: center;
-    background-color: #e0e0e0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--bg-highlight);
     border-radius: 4px;
     padding: 0.4rem 0.8rem;
     font-size: 0.9rem;
@@ -103,6 +107,6 @@
     width: 100%;
     max-height: 300px;
     object-fit: cover;
-    border: 1px solid #ccc;
+    border: 1px solid var(--bg-highlight);
     border-radius: 4px;
 }

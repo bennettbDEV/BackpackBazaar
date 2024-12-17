@@ -155,7 +155,7 @@ const SingleListing = () => {
                                 <button type="submit" classname="message-button">Send Message</button>
                             </form>
 
-                            <div class="button-wrapper">
+                            <div className="button-wrapper">
                                 <button
                                     className={`block-button ${isBlocked ? "blocked" : ""}`}
                                     onClick={toggleBlockUser}
