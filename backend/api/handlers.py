@@ -224,9 +224,9 @@ class UserHandler:
 
         try:
             if db_query.is_user_blocked(sender_id, receiver_id):
-                return Response({"detail": "User is blocked."}, status=status.HTTP_204_NO_CONTENT,)
+                return Response({"detail": "User is blocked."}, status=status.HTTP_200_OK,)
             else:
-                return Response({"detail": "User is not blocked."}, status=status.HTTP_204_NO_CONTENT,)
+                return Response({"detail": "User is not blocked."}, status=status.HTTP_200_OK,)
         except Exception as e:
             print(str(e))
             return Response({"error": "An unexpected error occurred while checking block status."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

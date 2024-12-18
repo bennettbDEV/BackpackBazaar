@@ -36,7 +36,7 @@ const SingleListing = () => {
                 );
 
                 // Determine block status
-                setIsBlocked(blockStatusResponse.data.is_blocked || false);
+                setIsBlocked(blockStatusResponse.data.detail == "User is blocked." || false);
             } catch (error) {
                 console.error("Error fetching listing or author data:", error);
             } finally {

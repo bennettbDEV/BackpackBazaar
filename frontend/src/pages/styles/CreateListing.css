@@ -1,10 +1,10 @@
 .centered-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    margin-top: 2rem;
+    align-items: start;
     min-height: 100vh;
     background-color: var(--bg-color);
-    padding: 1rem;
 }
 
 .createlisting-container {

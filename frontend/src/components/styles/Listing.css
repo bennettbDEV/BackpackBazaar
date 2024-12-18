@@ -67,8 +67,3 @@
   align-items: center;
   gap: 5px;
 }
-
-.like-button:hover,
-.dislike-button:hover {
-  color: #007bff;
-}
