@@ -1,20 +1,22 @@
 .register-container {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 .form-container {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 20px;
-    margin-top: 0px;
+    margin: 1.25rem;
+    margin-top: 0;
 }
 
 .form-input {
-    margin: 5px;
-    padding: 5px;
+    margin: 0.3125rem;
+    padding: 0.3125rem;
 }

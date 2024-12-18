@@ -1,52 +1,48 @@
 /* SettingsForm.css */
 .settings-form {
-    max-width: 400px;
-    padding: 20px;
-    padding-top: 0px;
-    margin-left: 0px;
+    max-width: 25rem;
+    padding: 1.25rem;
+    padding-top: 0;
+    margin-left: 0;
     margin-right: auto;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--bg-highlight);
+    border-radius: 0.625rem;
+    background-color: var(--bg-color);
+    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
 }
 
 .settings-form input,
 .settings-form label {
     display: block;
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 0.9375rem;
     font-size: 1rem;
 }
 
 .settings-form input {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
+    padding: 0.625rem;
+    border: 1px solid var(--bg-highlight);
+    border-radius: 0.3125rem;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     box-sizing: border-box;
-}
-
-.settings-form input:focus {
-    outline: none;
-    border-color: grey;
 }
 
 .settings-form img {
     display: block;
     max-width: 100%;
-    margin: 10px 0;
-    border-radius: 5px;
+    margin: 0.625rem 0;
+    border-radius: 0.3125rem;
 }
 
 .settings-form button {
     width: 100%;
-    padding: 10px;
+    padding: 0.625rem;
     font-size: 1rem;
     background-color: var(--reggie-red);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 0.25rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }

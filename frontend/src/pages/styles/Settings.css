@@ -1,20 +1,45 @@
 .settings-page {
     background-color: var(--bg-color);
-    margin-left: 100px;
-    margin-top: 5px;
+    color: var(--text-color);
+    padding-top: 1.25rem;
+    padding-left: 12.5rem;
+    padding-right: 12.5rem;
 }
 
-body{
-    color: var(--text-color)
+.theme-button {
+    display: inline-block;
+    padding: 0.625rem 1.25rem;
+    margin-right: 0.625rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s;
 }
+
+.theme-button.light-mode {
+    background-color: #282626;
+    color: #fff;
+}
+
+.theme-button.dark-mode {
+    background-color: #cecece;
+    color: #000;
+}
+
+.theme-button:hover {
+    opacity: 0.9;
+}
+
 .logout-button {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 0.625rem 1.25rem;
     background-color: var(--reggie-red);
-    color: white;
+    color: var(--alt-text-color);
     border: none;
-    border-radius: 4px;
-    font-size: 14px;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -26,13 +51,13 @@ body{
 
 .delete-account-button {
     display: inline-block;
-    padding: 10px 20px;
-    margin-bottom: 20px;
+    padding: 0.625rem 1.25rem;
+    margin-bottom: 1.25rem;
     background-color: lightgray;
     color: var(--reggie-red);
     border: none;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 0.25rem;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.4s ease, color 0.4s;
@@ -40,5 +65,5 @@ body{
 
 .delete-account-button:hover {
     background-color: var(--reggie-red);
-    color: white;
+    color: var(--alt-text-color);
 }

@@ -6,7 +6,7 @@ import "./styles/CreateListing.css";
 
 function CreateListing() {
     const navigate = useNavigate();
-    const [title, settitle] = useState("");
+    const [title, setTitle] = useState("");
     const [price, setPrice] = useState("");
     const [condition, setCondition] = useState("Factory New");
     const [description, setDescription] = useState("");
@@ -78,7 +78,7 @@ function CreateListing() {
                 <div className="createlisting-container">
                     <h1>Create Listing</h1>
 
-                    <form className="form-container" onSubmit={handleSubmit}>
+                    <form className="create-listing-form" onSubmit={handleSubmit}>
 
                         <label htmlFor="title">*Item Title:</label>
                         <input
@@ -86,7 +86,7 @@ function CreateListing() {
                             className="form-input"
                             type="text"
                             value={title}
-                            onChange={(e) => settitle(e.target.value)}
+                            onChange={(e) => setTitle(e.target.value)}
                             placeholder="Enter item name"
                             required
                         />
@@ -165,11 +165,13 @@ function CreateListing() {
                             required
                         />
                         {imagePreview && (
-                            <img
-                                className="form-submit-image"
-                                src={imagePreview}
-                                alt="Item Preview"
-                            />
+                            <div class="form-submit-image-container">
+                                <img
+                                    className="form-submit-image"
+                                    src={imagePreview}
+                                    alt="Item Preview"
+                                />
+                                </div>
                         )}
                         <button className="form-button" type="submit" disabled={loading}>
                             {loading ? "Submitting..." : "Create Listing"}

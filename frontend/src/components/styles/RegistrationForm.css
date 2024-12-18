@@ -1,0 +1,15 @@
+.registration-form-container{
+    padding: 20px;
+    color: var(--text-color);
+}
+
+.form-submit-image-container {
+    max-width: 100%;
+    max-height: 18.75rem;
+}
+
+.form-submit-image {
+    width: 100%;
+    max-height: 18.75rem;
+    object-fit: cover;
+}

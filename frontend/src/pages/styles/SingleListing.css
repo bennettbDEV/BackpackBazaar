@@ -1,51 +1,80 @@
 .single-listing-page {
-  max-width: 800px;
-  margin: 0 auto;
-  margin-bottom: 50px;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding-bottom: 1.25rem;
 }
 
 .single-listing-page h1 {
   text-align: center;
-  margin-bottom: 20px;
+}
+
+.content-wrapper {
+  display: flex;
+  padding-left: 6.25rem;
+  padding-right: 6.25rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  align-items: stretch;
+}
+
+.listing-section {
+  flex: 2;
+  background-color: var(--bg-color);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .author-details {
-  margin-top: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+  flex: 2;
+  margin-top: 1.75rem;
+  margin-bottom: 5rem;
+  min-width: 18.75rem;
+  padding: 0.9375rem;
+  border: 1px solid var(--bg-highlight);
+  flex-direction: column;
+  display: flex;
+  border-radius: 0.5rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 .author-image img {
   display: block;
   margin: 0 auto;
   border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 
 .author-details h3 {
   text-align: center;
-  margin-bottom: 10px;
-  color: #555;
+  margin-bottom: 0.625rem;
 }
 
 .author-details p {
-  font-size: 14px;
-  color: #666;
+  font-size: 0.875rem;
   text-align: center;
+}
+
+.message-form-textarea {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border-color: var(--bg-highlight);
+  border-radius: 0.3125rem;
 }
 
 /* Shared button styles (Message and Toggle Block) */
 form button,
 .block-button {
   display: inline-block;
-  margin: 10px 5px; /* Consistent spacing */
-  padding: 10px 15px;
+  margin: 0.625rem 0.3125rem;
+  padding: 0.625rem 0.9375rem;
   border: none;
-  border-radius: 5px;
-  font-size: 14px;
+  border-radius: 0.3125rem;
+  font-size: 0.875rem;
   font-weight: bold;
   color: white;
   cursor: pointer;
@@ -53,9 +82,8 @@ form button,
   text-align: center;
 }
 
-/* Message button */
-form button{
-  background-color: #4caf50; /* Green */
+form button {
+  background-color: #4caf50;
 }
 
 form button:hover {
@@ -70,9 +98,9 @@ form button:hover {
 /* Toggle Block button */
 .block-button {
   position: absolute;
-  bottom: 0px;
-  right: 5px;
-  background-color: var(--reggie-red); /* Red (Block default) */
+  bottom: 0;
+  right: 0.3125rem;
+  background-color: var(--reggie-red);
 }
 
 .block-button:hover {
@@ -81,10 +109,9 @@ form button:hover {
 }
 
 .block-button.blocked {
-  background-color: #4d79ff; /* Blue (Unblock default) */
+  background-color: #4d79ff;
 }
 
 .block-button.blocked:hover {
-  background-color: #3366ff; /* Dark blue for Unblock */
+  background-color: #3366ff;
 }
-

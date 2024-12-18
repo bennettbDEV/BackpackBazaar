@@ -103,71 +103,72 @@ const SingleListing = () => {
     return (
         <div>
             <NavBar />
-
             <div className="single-listing-page">
                 <h1>Listing Details</h1>
-                <Listing listing={listing} />
+                <div className="content-wrapper">
+                    <div className="listing-section">
+                    <Listing listing={listing} />
+                    </div>
 
-                {author ? (
-                    <div className="author-details">
-                        <h3>About the Seller</h3>
-                        <div className="author-image">
-                            <img
-                                src={
-                                    imageError || !author.image
-                                        ? fallbackImage
-                                        : `${api.defaults.baseURL}${author.image}`
-                                }
-                                alt={author.username || "Author"}
-                                style={{ width: "150px", height: "auto", borderRadius: "50%" }}
-                                onError={handleImageError}
-                            />
-                        </div>
-                        <p>
-                            <strong>Name:</strong> {author.username}
-                        </p>
-                        <p>
-                            <strong>Location:</strong> {author.location || "Not given"}
-                        </p>
+                    {author ? (
+                        <div className="author-details">
+                            <h3>About the Seller</h3>
+                            <div className="author-image">
+                                <img
+                                    src={
+                                        imageError || !author.image
+                                            ? fallbackImage
+                                            : `${api.defaults.baseURL}${author.image}`
+                                    }
+                                    alt={author.username || "Author"}
+                                    style={{ width: "150px", height: "auto", borderRadius: "50%" }}
+                                    onError={handleImageError}
+                                />
+                            </div>
+                            <p>
+                                <strong>Name:</strong> {author.username} <br></br>
+                                <strong>Location:</strong> {author.location || "Not given"}
+                            </p>
 
-                        {/* Message Form */}
-                        <div className="message-form">
-                            <h2>Send a Message</h2>
-                            <form onSubmit={handleFormSubmit}>
-                                <div style={{ marginBottom: "10px" }}>
-                                    <label
-                                        htmlFor="content"
-                                        style={{ display: "block", marginBottom: "5px" }}
+                            {/* Message Form */}
+                            <div className="message-form">
+                                <h2>Send a Message</h2>
+                                <form onSubmit={handleFormSubmit}>
+                                    <div>
+                                        <label
+                                            htmlFor="content"
+                                            style={{ display: "block", marginBottom: "5px" }}
+                                        >
+                                            Message Content:
+                                        </label>
+                                        <textarea className="message-form-textarea"
+                                            id="content"
+                                            name="content"
+                                            value={formData.content}
+                                            onChange={handleFormChange}
+                                            style={{ width: "95%", padding: "8px" }}
+                                            rows="5"
+                                            required
+                                        ></textarea>
+                                    </div>
+
+                                    <button type="submit" classname="message-button">Send Message</button>
+                                </form>
+
+                                <div className="button-wrapper">
+                                    <button
+                                        className={`block-button ${isBlocked ? "blocked" : ""}`}
+                                        onClick={toggleBlockUser}
                                     >
-                                        Message Content:
-                                    </label>
-                                    <textarea
-                                        id="content"
-                                        name="content"
-                                        value={formData.content}
-                                        onChange={handleFormChange}
-                                        style={{ width: "95%", padding: "8px" }}
-                                        rows="5"
-                                        required
-                                    ></textarea>
+                                        {isBlocked ? "Unblock User" : "Block User"}
+                                    </button>
                                 </div>
-
-                                <button type="submit" classname="message-button">Send Message</button>
-                            </form>
-
-                            <div className="button-wrapper">
-                                <button
-                                    className={`block-button ${isBlocked ? "blocked" : ""}`}
-                                    onClick={toggleBlockUser}
-                                >
-                                    {isBlocked ? "Unblock User" : "Block User"}
-                                </button>
                             </div>
                         </div>
-                    </div>
-                ) : (
-                    <p>Author details not available.</p>
-                )}
+                    ) : (
+                        <p>Author details not available.</p>
+                    )}
+                </div>
             </div>
         </div>
     );

@@ -1,0 +1,5 @@
+.messages-feed{
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: calc(100vh);
+}

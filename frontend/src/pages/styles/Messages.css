@@ -1,4 +1,13 @@
 .messages-container {
-    padding-left: 200px;
-    padding-right: 200px;
+    padding: 1.25rem;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.messages-container h1 {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
 }

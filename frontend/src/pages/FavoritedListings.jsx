@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Import Link for navigation
 import NavBar from "../components/Navbar";
 import ListingFeed from "../components/ListingFeed";
 import api from "../api";
-import "./styles/FavoriteListings.css";
+import "./styles/FavoritedListings.css";
 import { retryWithExponentialBackoff } from "../utils/retryWithExponentialBackoff";
 
 function FavoritedListings() {

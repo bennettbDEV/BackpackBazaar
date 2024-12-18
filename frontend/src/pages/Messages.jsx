@@ -32,7 +32,6 @@ function Messages() {
     return (
         <>
             <NavBar />
-
             <div className="messages-container">
                 <h1>Messages</h1>
                 <h2>

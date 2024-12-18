@@ -1,15 +1,15 @@
 .pagination-button {
     display: inline-block;
-    padding: 10px 20px;
-    margin: 5px;
-    margin-top: 15px;
-    margin-bottom: 50px;
+    padding: 0.625rem 1.25rem;
+    margin: 0.3125rem;
+    margin-top: 1rem;
+    margin-bottom: 3.125rem;
     background-color: var(--reggie-red);
     color: var(--alt-text-color);
     border: none;
     font-weight: bold;
-    border-radius: 4px;
-    font-size: 12px;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }

@@ -1,0 +1,20 @@
+/* FavoritedListings.css */
+
+/* General container styles */
+.saved-listings-container {
+    padding: 1.25rem;
+    background-color: var(--bg-color);
+    min-height: calc(100vh);
+}
+
+.saved-listings-container h1 {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+}
+
+.empty-listings-message{
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}

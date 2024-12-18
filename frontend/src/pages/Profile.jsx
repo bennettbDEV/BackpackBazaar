@@ -4,7 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
 import api from "../api";
 import LinkedButton from "../components/LinkedButton.jsx";
-import { ACCESS_TOKEN } from "../constants";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import testImg from "../assets/usericon.png";
 import { retryWithExponentialBackoff } from "../utils/retryWithExponentialBackoff";
 import "./styles/Profile.css";
@@ -69,7 +69,8 @@ function Profile() {
     };
 
     const handleLogout = () => {
-        localStorage.clear()
+        localStorage.removeItem(ACCESS_TOKEN);
+        localStorage.removeItem(REFRESH_TOKEN);
         window.location.reload();
     };
 

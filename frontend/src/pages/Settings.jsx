@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { useNavigate } from "react-router-dom";
 import { useUser } from '../contexts/UserContext.jsx';
 import NavBar from "../components/Navbar.jsx";
@@ -25,7 +26,8 @@ function Settings() {
     }, []);
 
     const handleLogout = () => {
-        localStorage.clear()
+        localStorage.removeItem(ACCESS_TOKEN);
+        localStorage.removeItem(REFRESH_TOKEN);
         navigate("/login", { replace: true });
     };
 
@@ -78,8 +80,13 @@ function Settings() {
             <NavBar />
             <div className="settings-page">
                 <h2>Settings</h2>
-                <button className="theme-button" onClick={toggleTheme}>Dark mode toggle</button>
+                <button className={`theme-button ${theme === 'dark' ? 'dark-mode' : 'light-mode'}`}
+                    onClick={toggleTheme}>
+                    {theme === 'light' ? 'Enable Dark Mode' : 'Enable Light Mode'}
+                </button>
+
                 <button className="logout-button" onClick={handleLogout}>Logout</button>
+                
                 <br></br>
                 <h3>Blocked users:</h3>
                 <UserFeed users={blockedUsers} onUnblock={handleUnblock} />

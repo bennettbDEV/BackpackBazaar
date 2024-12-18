@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import api from "../api";
+import "./styles/RegistrationForm.css";
 
 function RegistrationForm({ route }) {
     const [username, setUsername] = useState("");
@@ -97,11 +98,13 @@ function RegistrationForm({ route }) {
                     </label>
 
                     {imagePreview && (
+                        <div class="form-submit-image-container">
                         <img
                             className="form-submit-image"
                             src={imagePreview}
                             alt="Image Preview"
                         />
+                        </div>
                     )}
 
                     <button className="form-button" type="submit" disabled={loading}>
