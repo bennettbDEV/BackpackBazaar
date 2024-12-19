@@ -37,18 +37,20 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-right">
-        <a href="/profile" className="profile-icon">
-          <img
-            src={userImage}
-            //alt="Profile"
-            onError={(e) => {
-              e.target.src = userIcon;
-            }}
-          />
-        </a>
-        <a href="/settings" className="settings">
-          <img src={settingsIcon} alt="Settings" />
-        </a>
+        <div className="navbar-end-align">
+          <a href="/profile" className="profile-icon">
+            <img
+              src={userImage}
+              //alt="Profile"
+              onError={(e) => {
+                e.target.src = userIcon;
+              }}
+            />
+          </a>
+          <a href="/settings" className="settings">
+            <img src={settingsIcon} alt="Settings" />
+          </a>
+        </div>
       </div>
     </nav>
   );
