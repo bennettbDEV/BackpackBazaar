@@ -7,6 +7,7 @@ function Form({ route, method }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [errorVisible, setErrorVisible] = useState(false);
     const navigate = useNavigate();
 
     const name = method === "login" ? "Login" : "Register";
@@ -25,7 +26,9 @@ function Form({ route, method }) {
                 navigate("/login")
             }
         } catch (error) {
-            alert(error)
+            console.log(error)
+            setErrorVisible(true);
+
         } finally {
             setLoading(false)
         }
@@ -48,6 +51,9 @@ function Form({ route, method }) {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
             />
+            <p className={`form-error ${errorVisible ? "" : "no-display"}`}>
+                <i>Failed to login - please check your login information.</i>
+            </p>
             <button className="form-button" type="submit">
                 {name}
             </button>
