@@ -51,17 +51,6 @@ h3 {
     margin-top: 1.5rem;
 }
 
-button {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 0.25rem;
-    background-color: var(--reggie-red);
-    color: var(--alt-text-color);
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
 button:hover {
     background-color: var(--reggie-red-hover);
 }

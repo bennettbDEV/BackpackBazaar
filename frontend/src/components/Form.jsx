@@ -52,7 +52,7 @@ function Form({ route, method }) {
                 placeholder="Password"
             />
             <p className={`form-error ${errorVisible ? "" : "no-display"}`}>
-                <i>Failed to login - please check your login information.</i>
+                <i>Failed to login. Please check your login information.</i>
             </p>
             <button className="form-button" type="submit">
                 {name}

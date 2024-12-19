@@ -11,9 +11,8 @@ function Login() {
             <NavBar />
             <div className="login-container">
                 <Form route="/api/token/" method="login" />
-                
                 <h2>New to ISU Marketplace?</h2>
-                <button onClick={() => navigate("/register")}>
+                <button className="form-button" onClick={() => navigate("/register")}>
                     <b>Register</b>
                 </button>
             </div>
