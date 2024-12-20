@@ -6,7 +6,7 @@
     color: var(--text-color);
 }
 
-.logout-button {
+button {
     display: inline-block;
     padding: 0.625rem 1.25rem;
     background-color: var(--reggie-red);
@@ -21,4 +21,20 @@
 
 .logout-button:hover {
     background-color: var(--reggie-red-hover);
+}
+
+.profile-image{
+    margin:1rem 0rem;
+}
+
+a {
+    text-decoration: underline;
+    /* font-weight: bold; */
+}
+
+.button-layout{
+    display:flex;
+    justify-content: flex-start;
+    gap:1rem;
+    margin-bottom:2rem;
 }
