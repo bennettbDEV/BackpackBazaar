@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-pac%s(yreueunj1fv-hkslf)2d&-7xx)ca__uz4ow)zmfrk3ml' # Dont worry that this is exposed, we will generate a new key to be used for production and use env vars
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     #'django_extensions',
     # Created Apps
     "api",
+    "accounts",
     "user_messages",
     "drf_spectacular"
 ]
@@ -81,7 +82,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
 
-ROOT_URLCONF = "backend.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -99,7 +100,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "backend.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
