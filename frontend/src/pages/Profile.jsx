@@ -91,23 +91,29 @@ function Profile() {
         <div>
             <NavBar />
             <div className="profile-container">
-                <h1>Profile Page</h1>
+                <h1>Your Profile</h1>
                 {userData ? (
                     <>
                         <p>Username: {userData.username}</p>
                         <p>Location: {userData.location || "Not given"}</p>
-                        <img src={imageUrl} width="150" alt="Profile" />
+                        
+                        <img className="profile-image" src={imageUrl} width="150" alt="Profile" />
                         <br></br>
                         
                     </>
                 ) : (
                     <p>Loading user data...</p>
                 )}
-                <button className="logout-button" onClick={handleLogout}>Logout</button>
-                <h2>Your Listings:</h2>
+                <div className="button-layout">
+                    <a href="/settings"><button>Edit User Information</button></a>
+                    <button onClick={handleLogout}>Logout</button>
+                </div>
+
+                <h2>Your Listings</h2>
                 {loading ? (
                     <p>Loading...</p>
                 ) : (
+                    listings.length > 0 ? (
                     <>
                         <ListingFeed
                             listings={listings}
@@ -128,6 +134,8 @@ function Profile() {
                             />
                         </div>
                     </>
+                ) : 
+                    <p>No listings found.</p>
                 )}
             </div>
         </div>

@@ -54,16 +54,21 @@
     padding: 0.625rem 1.25rem;
     margin-bottom: 1.25rem;
     background-color: lightgray;
-    color: var(--reggie-red);
+    color: #a10101;
     border: none;
     border-radius: 0.25rem;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.4s ease, color 0.4s;
+    transition: background-color 0.3s ease, color 0.3s;
+    border: 3px solid #a10101;
 }
 
 .delete-account-button:hover {
     background-color: var(--reggie-red);
     color: var(--alt-text-color);
+}
+
+input {
+    margin:  0.45rem;
 }

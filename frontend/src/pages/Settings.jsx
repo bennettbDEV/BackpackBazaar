@@ -88,9 +88,9 @@ function Settings() {
                 <button className="logout-button" onClick={handleLogout}>Logout</button>
                 
                 <br></br>
-                <h3>Blocked users:</h3>
+                <h3>Blocked Users</h3>
                 <UserFeed users={blockedUsers} onUnblock={handleUnblock} />
-                <h3>Edit & Delete:</h3>
+                <h3>Edit & Delete User Info</h3>
                 <div className="editing-form-container">
                     {userData ? (
                         <SettingsForm userData={userData} userId={userId} />

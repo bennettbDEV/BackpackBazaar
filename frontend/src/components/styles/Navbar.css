@@ -29,8 +29,7 @@
 }
 
 .navbar a:hover {
-	color: #bcbcbc;
-	transition-duration: 0.2s;
+	text-decoration: underline;
 }
 
 .logo {
