@@ -80,7 +80,7 @@ function CreateListing() {
 
                     <form className="create-listing-form" onSubmit={handleSubmit}>
 
-                        <label htmlFor="title"><red>*</red> Item Title:</label>
+                        <label htmlFor="title"><red>*</red> Item Title</label>
                         <input
                             id="title"
                             className="form-input"
@@ -91,7 +91,7 @@ function CreateListing() {
                             required
                         />
 
-                        <label htmlFor="price"><red>*</red> Price:</label>
+                        <label htmlFor="price"><red>*</red> Price</label>
                         <input
                             id="price"
                             className="form-input"
@@ -104,7 +104,7 @@ function CreateListing() {
                             required
                         />
 
-                        <label htmlFor="condition"><red>*</red> Condition:</label>
+                        <label htmlFor="condition"><red>*</red> Condition</label>
                         <select
                             id="condition"
                             className="form-input"
@@ -119,7 +119,7 @@ function CreateListing() {
                             <option value="Refurbished">Refurbished</option>
                         </select>
 
-                        <label htmlFor="description"><red>*</red> Description:</label>
+                        <label htmlFor="description"><red>*</red> Description</label>
                         <textarea
                             id="description"
                             className="form-input"
@@ -131,7 +131,7 @@ function CreateListing() {
                             required
                         ></textarea>
 
-                        <label>Tags:</label>
+                        <label><red>*</red> Tags</label>
                         <div className="tags-input-container">
                             <input
                                 className="form-input"
@@ -155,7 +155,7 @@ function CreateListing() {
                             ))}
                         </div>
 
-                        <label htmlFor="image"><red>*</red> Upload Item Image:</label>
+                        <label htmlFor="image"><red>*</red> Upload Item Image</label>
                         <input
                             id="image"
                             className="form-input file-input"
