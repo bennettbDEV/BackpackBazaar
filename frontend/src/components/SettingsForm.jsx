@@ -84,7 +84,7 @@ function SettingsForm({ userData, userId }) {
     return (
         <form className="settings-form" onSubmit={handleSaveChanges}>
             <h4>Edit Profile</h4>
-            New Username:
+            New Username
             <input
                 type="text"
                 name="username"
@@ -92,7 +92,7 @@ function SettingsForm({ userData, userId }) {
                 onChange={handleInputChange}
                 placeholder="Username..."
             />
-            New Email:
+            New Email
             <input
                 type="email"
                 name="email"
@@ -100,7 +100,7 @@ function SettingsForm({ userData, userId }) {
                 onChange={handleInputChange}
                 placeholder="Email..."
             />
-            New Location:
+            New Location
             <input
                 type="text"
                 name="location"
@@ -109,11 +109,11 @@ function SettingsForm({ userData, userId }) {
                 placeholder="Location..."
             />
             <label>
-                New Profile Image:
+                New Profile Image
                 <input type="file" accept="image/*" onChange={handleImageUpload} />
             </label>
             {imagePreview && <img src={imagePreview} alt="Image Preview" />}
-            New Password:
+            New Password
             <input
                 type="password"
                 name="password"
@@ -121,7 +121,7 @@ function SettingsForm({ userData, userId }) {
                 onChange={handleInputChange}
                 placeholder="New Password..."
             />
-            Confirm New Password:
+            Confirm New Password
             <input
                 type="password"
                 name="confirmPassword"

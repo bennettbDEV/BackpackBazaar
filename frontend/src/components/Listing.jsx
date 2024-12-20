@@ -41,7 +41,6 @@ function Listing({ listing, additionalAction }) {
                             src={imageUrl}
                             alt={listing.title}
                             className="listing-image-file"
-                            style={{ width: "200px", height: "auto" }}
                             onError={handleImageError} // Trigger fallback on error
                         />
                     ) : (
@@ -49,7 +48,6 @@ function Listing({ listing, additionalAction }) {
                             src={fallbackImage} // Fallback image
                             alt="Fallback"
                             className="listing-image-file"
-                            style={{ width: "200px", height: "auto" }}
                         />
                     )}
                 </div>
