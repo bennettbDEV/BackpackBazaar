@@ -19,6 +19,7 @@ Including another URLconf
 """
 
 from accounts.views import UserViewSet
+from listings.views import ListingViewSet
 from api.views import LoginView, ServeImageView
 from django.contrib import admin
 from django.urls import include, path
@@ -29,10 +30,11 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
 router = DefaultRouter()
 router.register(r"users", UserViewSet, basename="user")
+router.register(r"listings", ListingViewSet, basename="listing")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -48,6 +50,7 @@ urlpatterns = [
     # Authentication
     # api/token/ is used for logging in, token/refresh/ is used to refresh access token
     path("api/token/", LoginView.as_view(), name="get_token"),
+    path("test/token/", TokenObtainPairView.as_view(), name="get_token"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="refresh"),
 
     # Main api urls

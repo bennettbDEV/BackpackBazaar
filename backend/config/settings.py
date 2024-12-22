@@ -35,7 +35,7 @@ ALLOWED_HOSTS = ["*"]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "api.authentication.CustomJWTAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     # Created Apps
     "api",
     "accounts",
+    "listings",
     "user_messages",
     "drf_spectacular"
 ]

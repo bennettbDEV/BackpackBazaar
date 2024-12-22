@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import status, viewsets
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
@@ -22,9 +23,18 @@ class UserViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             user = UserService.create_user(**serializer.validated_data)
-            return Response(
-                self.get_serializer(user).data, status=status.HTTP_201_CREATED
-            )
+            user_data = self.get_serializer(user).data
+
+            # Generate JWT token
+            refresh = RefreshToken.for_user(user)
+            token_data = {
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+            }
+
+            user_data.update(token_data)
+
+            return Response(user_data, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
