@@ -23,14 +23,14 @@ class ListingSerializer(serializers.ModelSerializer):
             "tags_out",
             "created_at",
             "last_modified_at",
-            "author",
+            "author_id",
         ]
         read_only_fields = [
             "likes",
             "dislikes",
             "created_at",
             "last_modified_at",
-            "author",
+            "author_id",
         ]
 
     def get_tags_out(self, obj):

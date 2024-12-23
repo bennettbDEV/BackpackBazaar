@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-pac%s(yreueunj1fv-hkslf)2d&-7xx)ca__uz4ow)zmfrk3ml' # Dont worry that this is exposed, we will generate a new key to be used for production and use env vars
+SECRET_KEY = "django-insecure-pac%s(yreueunj1fv-hkslf)2d&-7xx)ca__uz4ow)zmfrk3ml"  # Dont worry that this is exposed, we will generate a new key to be used for production and use env vars
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,6 +45,7 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.BrowsableAPIRenderer",  # Enables the browsable API
     ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_PAGINATION_CLASS": "api.pagination.StandardResultsSetPagination",
 }
 
 SIMPLE_JWT = {
@@ -63,13 +64,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "corsheaders",
+    'django_filters',
     #'django_extensions',
     # Created Apps
     "api",
     "accounts",
     "listings",
     "user_messages",
-    "drf_spectacular"
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [

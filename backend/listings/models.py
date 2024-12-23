@@ -28,4 +28,4 @@ class Listing(models.Model):
     tags = models.ManyToManyField(Tag, blank=True) # null=True has no effect according to docs
     created_at = models.DateField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author_id = models.ForeignKey(User, on_delete=models.CASCADE)

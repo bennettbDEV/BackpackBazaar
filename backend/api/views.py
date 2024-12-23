@@ -12,7 +12,7 @@ from django.views import View
 from drf_spectacular.utils import OpenApiExample, extend_schema, extend_schema_view
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.pagination import PageNumberPagination
+
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -47,34 +47,6 @@ class LoginView(TokenObtainPairView):
 
         # If the serializer is invalid, return errors
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class StandardResultsSetPagination(PageNumberPagination):
-    """Pagination class that paginates responses into distinct page numbers.
-
-    Extends PageNumberPagination- which handles the actual pagination logic.
-
-    Attributes:
-        page_size (int): The number of objects on each page.
-        page_size_query_param (String): The query string that is used to choose the page size.
-        max_page_size (int): The maximum number of objects per page.
-    """
-
-    page_size = 12
-    page_size_query_param = "page_size"
-    max_page_size = 50
-
-    def get_paginated_response(self, data):
-        return Response(
-            {
-                "links": {
-                    "next": self.get_next_link(),
-                    "previous": self.get_previous_link(),
-                },
-                "count": self.page.paginator.count,
-                "results": data,
-            }
-        )
 
 
 @extend_schema_view(
@@ -165,7 +137,6 @@ class UserViewSet(viewsets.GenericViewSet):
     """
 
     serializer_class = UserSerializer
-    pagination_class = StandardResultsSetPagination
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -625,7 +596,6 @@ class ListingViewSet(viewsets.GenericViewSet):
     """
 
     serializer_class = ListingSerializer
-    pagination_class = StandardResultsSetPagination
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

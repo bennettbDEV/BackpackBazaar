@@ -6,9 +6,9 @@ from listings.models import Listing, Tag
 class ListingService:
     @staticmethod
     @transaction.atomic
-    def create_listing(author, title, condition, description, price, image, tags):
+    def create_listing(author_id, title, condition, description, price, image, tags):
         listing = Listing.objects.create(
-            author=author,
+            author_id=author_id,
             title=title,
             condition=condition,
             description=description,
