@@ -18,8 +18,6 @@ class ListingFilter(filters.FilterSet):
         model = Listing
         fields = [
             "condition",
-            "likes",
-            "dislikes",
             "author_id",
         ]
 

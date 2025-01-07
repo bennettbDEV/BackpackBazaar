@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 
 
 class Tag(models.Model):
@@ -9,11 +8,11 @@ class Tag(models.Model):
 
 class Listing(models.Model):
     class ItemCondition(models.TextChoices):
-        FACTORY_NEW = "FN", _("Factory New")
-        MINIMAL_WEAR = "MW", _("Minimal Wear")
-        FAIR = "FR", _("Fair")
-        WELL_WORN = "WW", _("Well Worn")
-        REFURBISHED = "RD", _("Refurbished")
+        FACTORY_NEW = "FN", "Factory New"
+        MINIMAL_WEAR = "MW", "Minimal Wear"
+        FAIR = "FR", "Fair"
+        WELL_WORN = "WW", "Well Worn"
+        REFURBISHED = "RD", "Refurbished"
     title = models.CharField(max_length=50)
     condition = models.CharField(
         max_length=2,
