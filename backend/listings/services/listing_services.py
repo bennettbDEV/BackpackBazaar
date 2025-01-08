@@ -13,7 +13,7 @@ class ListingService:
             condition=condition,
             description=description,
             price=price,
-            image=image
+            image=image,
         )
 
         # Handle tag creation and association
@@ -23,3 +23,12 @@ class ListingService:
 
         return listing
 
+    @staticmethod
+    @transaction.atomic
+    def update_listing(author_id, title, condition, description, price, image, tags):
+        pass
+
+    @staticmethod
+    @transaction.atomic
+    def partial_update_listing(author_id, title, condition, description, price, image, tags):
+        pass

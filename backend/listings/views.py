@@ -70,3 +70,54 @@ class ListingViewSet(viewsets.ModelViewSet):
 
         response_serializer = self.get_serializer(listing)
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+    
+    def update(self, request, pk=None):
+        listing = self.get_object()
+
+        if listing.author_id != request.user:
+            return Response({"error": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN)
+        
+        request_data = request.data.copy()
+        request_data["author_id"] = request.user
+
+        serializer = self.get_serializer(listing, data=request_data)
+        serializer.is_valid(raise_exception=True)
+        validated_data = serializer.validated_data
+
+        updated_listing = ListingService.update_listing(
+            author_id=request.user,
+            title=validated_data["title"],
+            condition=validated_data["condition"],
+            description=validated_data["description"],
+            price=validated_data["price"],
+            image=validated_data["image"],
+            tags=validated_data["tags"],
+        )
+
+        response_serializer = self.get_serializer(updated_listing)
+        return Response(response_serializer.data, status=status.HTTP_200_OK)
+    
+    def partial_update(self, request, pk=None):
+        listing = self.get_object()
+        print(listing.id)
+        if listing.author_id != request.user:
+            return Response({"error": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN)
+        
+        request_data = request.data.copy()
+
+        serializer = self.get_serializer(listing, data=request_data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        validated_data = serializer.validated_data
+
+        updated_listing = ListingService.partial_update_listing(
+            author_id=request.user,
+            title=validated_data.get("title", listing.title),
+            condition=validated_data.get("condition", listing.condition),
+            description=validated_data.get("description", listing.description),
+            price=validated_data.get("price", listing.price),
+            image=validated_data.get("image", listing.image),
+            tags=validated_data.get("tags", [tag.tag_name for tag in listing.tags.all()]),
+        )
+
+        response_serializer = self.get_serializer(updated_listing)
+        return Response(response_serializer.data, status=status.HTTP_200_OK)
