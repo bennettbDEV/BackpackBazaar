@@ -78,14 +78,13 @@ class ListingViewSet(viewsets.ModelViewSet):
             return Response({"error": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN)
         
         request_data = request.data.copy()
-        request_data["author_id"] = request.user
 
         serializer = self.get_serializer(listing, data=request_data)
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
 
         updated_listing = ListingService.update_listing(
-            author_id=request.user,
+            listing_id=listing.id,
             title=validated_data["title"],
             condition=validated_data["condition"],
             description=validated_data["description"],
@@ -99,7 +98,6 @@ class ListingViewSet(viewsets.ModelViewSet):
     
     def partial_update(self, request, pk=None):
         listing = self.get_object()
-        print(listing.id)
         if listing.author_id != request.user:
             return Response({"error": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN)
         
@@ -110,13 +108,13 @@ class ListingViewSet(viewsets.ModelViewSet):
         validated_data = serializer.validated_data
 
         updated_listing = ListingService.partial_update_listing(
-            author_id=request.user,
-            title=validated_data.get("title", listing.title),
-            condition=validated_data.get("condition", listing.condition),
-            description=validated_data.get("description", listing.description),
-            price=validated_data.get("price", listing.price),
-            image=validated_data.get("image", listing.image),
-            tags=validated_data.get("tags", [tag.tag_name for tag in listing.tags.all()]),
+            listing_id=listing.id,
+            title=validated_data.get("title"),
+            condition=validated_data.get("condition"),
+            description=validated_data.get("description"),
+            price=validated_data.get("price"),
+            image=validated_data.get("image"),
+            tags=validated_data.get("tags"),
         )
 
         response_serializer = self.get_serializer(updated_listing)
