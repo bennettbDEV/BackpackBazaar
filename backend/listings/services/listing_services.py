@@ -76,3 +76,22 @@ class ListingService:
         listing.save()
         return listing
 
+    @staticmethod
+    @transaction.atomic
+    def save_listing():
+        pass
+
+    @staticmethod
+    @transaction.atomic
+    def remove_saved_listing():
+        pass
+
+    @staticmethod
+    @transaction.atomic
+    def like_listing(listing):
+        pass
+
+    @staticmethod
+    @transaction.atomic
+    def dislike_listing(listing):
+        pass

@@ -1,11 +1,13 @@
+from django_filters import rest_framework as filters
+from rest_framework import filters as rest_filters
 from rest_framework import status, viewsets
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from .serializers import ListingSerializer
+
 from .models import Listing
+from .serializers import ListingSerializer
 from .services.listing_services import ListingService
-from rest_framework import filters as rest_filters
-from django_filters import rest_framework as filters
 
 
 class ListingFilter(filters.FilterSet):
@@ -71,13 +73,15 @@ class ListingViewSet(viewsets.ModelViewSet):
 
         response_serializer = self.get_serializer(listing)
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
-    
+
     def update(self, request, pk=None):
         listing = self.get_object()
 
         if listing.author_id != request.user:
-            return Response({"error": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN)
-        
+            return Response(
+                {"error": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN
+            )
+
         request_data = request.data.copy()
 
         serializer = self.get_serializer(listing, data=request_data)
@@ -97,12 +101,14 @@ class ListingViewSet(viewsets.ModelViewSet):
 
         response_serializer = self.get_serializer(updated_listing)
         return Response(response_serializer.data, status=status.HTTP_200_OK)
-    
+
     def partial_update(self, request, pk=None):
         listing = self.get_object()
         if listing.author_id != request.user:
-            return Response({"error": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN)
-        
+            return Response(
+                {"error": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN
+            )
+
         request_data = request.data.copy()
 
         serializer = self.get_serializer(listing, data=request_data, partial=True)
@@ -122,3 +128,29 @@ class ListingViewSet(viewsets.ModelViewSet):
 
         response_serializer = self.get_serializer(updated_listing)
         return Response(response_serializer.data, status=status.HTTP_200_OK)
+
+    # Additional actions
+
+    @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
+    def save_listing(self, request, pk=None):
+        pass
+
+    @action(detail=True, methods=["delete"], permission_classes=[IsAuthenticated])
+    def remove_saved_listing(self, request, pk=None):
+        pass
+
+    @action(detail=False, permission_classes=[IsAuthenticated])
+    def list_saved_listing(self, request):
+        pass
+
+    @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
+    def like_listing(self, request, pk=None):
+        listing = self.get_object()
+        response = ListingService.like_listing(listing)
+        return response
+
+    @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
+    def dislike_listing(self, request, pk=None):
+        listing = self.get_object()
+        response = ListingService.dislike_listing(listing)
+        return response
