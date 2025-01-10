@@ -16,9 +16,8 @@ class ListingService:
             image=image,
         )
 
-        # Handle tag creation and association
         for tag_name in tags:
-            tag, _ = Tag.objects.get_or_create(tag_name=tag_name.strip())
+            tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
             listing.tags.add(tag)
 
         return listing

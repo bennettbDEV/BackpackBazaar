@@ -3,9 +3,7 @@ from .models import Listing
 
 
 class ListingSerializer(serializers.ModelSerializer):
-    tags = serializers.ListField(
-        child=serializers.CharField(max_length=50), write_only=True
-    )
+    tags = serializers.CharField(write_only=True)
     tags_out = serializers.SerializerMethodField()
 
     class Meta:
@@ -35,3 +33,6 @@ class ListingSerializer(serializers.ModelSerializer):
 
     def get_tags_out(self, obj):
         return [tag.tag_name for tag in obj.tags.all()]
+    
+    def validate_tags(self, value):
+        return [tag.strip() for tag in value.split(',') if tag.strip()]

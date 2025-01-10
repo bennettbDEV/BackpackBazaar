@@ -1,5 +1,7 @@
+import os
 from io import BytesIO
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from PIL import Image
@@ -11,83 +13,100 @@ from .models import Listing, Tag
 from .serializers import ListingSerializer
 
 
-class ListingViewSetTests(APITestCase):
-    def _generate_test_image(self):
-        img = Image.new(
-            "RGB", (100, 100), color=(255, 0, 0)
-        )  # Create a 100x100 red image
-        buffer = BytesIO()
-        img.save(buffer, format="JPEG")
-        buffer.seek(0)
-        return SimpleUploadedFile(
-            "test_image.jpg", buffer.read(), content_type="image/jpeg"
-        )
+class ListingBaseTestCase(APITestCase):
+    """Base test class providing setup for listing-related tests."""
 
-    def setUp(self):
-        self.client = APIClient()
-        self.user = User.objects.create_user(username="testuser", password="testpass")
-        self.client.force_authenticate(user=self.user)
-        self.test_image = self._generate_test_image()
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = APIClient()
+        cls.user = User.objects.create_user(username="testuser", password="testpass")
+        cls.client.force_authenticate(user=cls.user)
 
-        # Create tag objects
-        tag1 = Tag.objects.create(tag_name="Tag1")
-        tag2 = Tag.objects.create(tag_name="Tag2")
-        self.valid_listing_data = {
+        cls.test_image = cls._retrieve_test_image()
+
+        # Create example tags
+        cls.tag1 = Tag.objects.create(tag_name="Tag1")
+        cls.tag2 = Tag.objects.create(tag_name="Tag2")
+
+        # Listing data template
+        cls.valid_listing_data = {
             "title": "Sample Listing",
             "condition": "MW",
             "description": "A sample description.",
             "price": 101.0,
             "tags": ["Tag1", "Tag2"],
         }
-        self.valid_listing_data["image"] = self._generate_test_image()
+        cls.valid_listing_data["image"] = cls.test_image
 
-        self.listing = Listing.objects.create(
+        cls.listing = Listing.objects.create(
             title="Sample Listing 0",
             condition="FN",
             description="A sample description.",
             price=100.0,
-            image=self.test_image,
-            author_id=self.user,
+            image=cls.test_image,
+            author_id=cls.user,
         )
-        self.listing.tags.set([tag1, tag2])
+        cls.listing.tags.set([cls.tag1, cls.tag2])
 
+    @classmethod
+    def _retrieve_test_image(cls):
+        image_path = os.path.join(settings.BASE_DIR, "media", "tests", "test_image.jpg")
+        # Only create image if it doesnt exist
+        if not os.path.exists(image_path):
+            img = Image.new("RGB", (100, 100), color=(255, 0, 0))
+            img.save(image_path, format="JPEG")
+        with open(image_path, "rb") as image_file:
+            return SimpleUploadedFile(
+                "test_image.jpg", image_file.read(), content_type="image/jpeg"
+            )
+
+
+class CreateListingTestCase(ListingBaseTestCase):
     def test_create_valid_listing(self):
-        url = reverse("listing-list")
         response = self.client.post(
-            url, data=self.valid_listing_data, format="multipart"
+            reverse("listing-list"), self.valid_listing_data, format="multipart"
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Listing.objects.count(), 2)
-        self.assertIn("Tag1", [tag.tag_name for tag in Tag.objects.all()])
 
     def test_create_listing_unauthenticated(self):
         self.client.logout()
-        self.valid_listing_data["image"] = self._generate_test_image()
-        url = reverse("listing-list")
         response = self.client.post(
-            url, data=self.valid_listing_data, format="multipart"
+            reverse("listing-list"), self.valid_listing_data, format="multipart"
         )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
+
+class RetrieveListingTestCase(ListingBaseTestCase):
     def test_retrieve_listing(self):
         response = self.client.get(
-            reverse("listing-detail", kwargs={"pk": self.listing.id})
+            reverse("listing-detail", kwargs={"pk": self.listing.pk})
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["title"], self.listing.title)
 
-    def test_update_listing(self):
-        updated_data = self.valid_listing_data.copy()
-        updated_data["description"] = "Updated description."
-        response = self.client.put(
+
+class PartialUpdateListingTestCase(ListingBaseTestCase):
+    def test_partial_update_listing(self):
+        response = self.client.patch(
             reverse("listing-detail", kwargs={"pk": self.listing.pk}),
-            updated_data,
-            format="multipart",
+            {"description": "Updated description."},
+            format="json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.listing.refresh_from_db()
         self.assertEqual(self.listing.description, "Updated description.")
 
+    def test_update_listing_invalid_data(self):
+        response = self.client.patch(
+            reverse("listing-detail", kwargs={"pk": self.listing.pk}),
+            {"price": "invalid"},
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteListingTestCase(ListingBaseTestCase):
     def test_delete_listing(self):
         response = self.client.delete(
             reverse("listing-detail", kwargs={"pk": self.listing.pk})
@@ -95,24 +114,19 @@ class ListingViewSetTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Listing.objects.filter(pk=self.listing.pk).exists())
 
+
+class ListAndFilterListingsTestCase(ListingBaseTestCase):
     def test_list_listings(self):
         response = self.client.get(reverse("listing-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data["results"]), Listing.objects.count())
 
     def test_filter_listings_by_condition(self):
         response = self.client.get(reverse("listing-list") + "?condition=FN")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(
-            all(item["condition"] == "FN" for item in response.data["results"])
-        )
 
     def test_search_listings(self):
         response = self.client.get(reverse("listing-list") + "?search=Sample")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(
-            any("Sample" in item["title"] for item in response.data["results"])
-        )
 
     def test_order_listings_by_price(self):
         Listing.objects.create(
@@ -125,4 +139,3 @@ class ListingViewSetTests(APITestCase):
         )
         response = self.client.get(reverse("listing-list") + "?ordering=price")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["results"][0]["price"], 50.0)

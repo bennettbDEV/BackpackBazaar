@@ -58,6 +58,7 @@ class ListingViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
 
+        tags = validated_data.pop("tags", [])
         listing = ListingService.create_listing(
             author_id=request.user,
             title=validated_data["title"],
@@ -65,7 +66,7 @@ class ListingViewSet(viewsets.ModelViewSet):
             description=validated_data["description"],
             price=validated_data["price"],
             image=validated_data["image"],
-            tags=validated_data["tags"],
+            tags=tags,
         )
 
         response_serializer = self.get_serializer(listing)
@@ -83,6 +84,7 @@ class ListingViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
 
+        tags = validated_data.pop("tags", [])
         updated_listing = ListingService.update_listing(
             listing_id=listing.id,
             title=validated_data["title"],
@@ -90,7 +92,7 @@ class ListingViewSet(viewsets.ModelViewSet):
             description=validated_data["description"],
             price=validated_data["price"],
             image=validated_data["image"],
-            tags=validated_data["tags"],
+            tags=tags,
         )
 
         response_serializer = self.get_serializer(updated_listing)
@@ -106,6 +108,7 @@ class ListingViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(listing, data=request_data, partial=True)
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
+        tags = validated_data.pop("tags", None)
 
         updated_listing = ListingService.partial_update_listing(
             listing_id=listing.id,
@@ -114,7 +117,7 @@ class ListingViewSet(viewsets.ModelViewSet):
             description=validated_data.get("description"),
             price=validated_data.get("price"),
             image=validated_data.get("image"),
-            tags=validated_data.get("tags"),
+            tags=tags,
         )
 
         response_serializer = self.get_serializer(updated_listing)
