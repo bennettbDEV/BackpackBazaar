@@ -8,7 +8,7 @@ function CreateListing() {
     const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [price, setPrice] = useState("");
-    const [condition, setCondition] = useState("Factory New");
+    const [condition, setCondition] = useState("FN");
     const [description, setDescription] = useState("");
     const [tags, setTags] = useState([]);
     const [currentTag, setCurrentTag] = useState("");
@@ -112,11 +112,11 @@ function CreateListing() {
                             onChange={(e) => setCondition(e.target.value)}
                             required
                         >
-                            <option value="Factory New">Factory New</option>
-                            <option value="Minimal Wear">Minimal Wear</option>
-                            <option value="Fair">Fair</option>
-                            <option value="Well Worn">Well Worn</option>
-                            <option value="Refurbished">Refurbished</option>
+                            <option value="FN">Factory New</option>
+                            <option value="MW">Minimal Wear</option>
+                            <option value="FR">Fair</option>
+                            <option value="WW">Well Worn</option>
+                            <option value="RD">Refurbished</option>
                         </select>
 
                         <label htmlFor="description"><red>*</red> Description:</label>

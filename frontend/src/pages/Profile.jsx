@@ -57,8 +57,8 @@ function Profile() {
             .then((data) => {
                 console.log("API Response:", data);
                 setListings(data.results);
-                setNextPage(data.links?.next || null);
-                setPreviousPage(data.links?.previous || null);
+                setNextPage(data?.next || null);
+                setPreviousPage(data?.previous || null);
             })
             .catch((err) => {
                 console.error("Error fetching listings:", err);

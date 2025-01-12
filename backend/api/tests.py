@@ -11,7 +11,7 @@ from api.handlers import ListingHandler, UserHandler
 from api.models import Listing, User
 from api.serializers import ListingSerializer, LoginSerializer, UserSerializer
 from api.views import ListingViewSet
-from backend.settings import BASE_DIR
+from config.settings import BASE_DIR
 
 
 # Functions/Classes to help setup Tests

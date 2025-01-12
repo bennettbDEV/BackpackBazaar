@@ -5,3 +5,19 @@ This project, Backpack Bazaar, is an extension of a group project I worked on pr
 - Add more customization options
 - Implement automatic listing classification using AI/ML
 - Develop an algorithm/method to provide suggested/recommended listings to users
+
+## Roadmap
+
+- [X] Add dark mode
+- [X] Refactor front-end to use rems instead of px
+- [X] Refactor authentication using Django's built in tools
+- [X] Alter User/UserProfile to use Django's ORM
+- [ ] Test User/UserProfile
+- [X] Alter Listing to use Django's ORM
+- [X] Test Listing
+- [ ] Alter Messages to use Django's ORM
+- [ ] Add tests for every feature
+- [X] Frontend Integration
+- [ ] Test Frontend more thoroughly
+- [ ] Add automatic listing classification
+- [ ] Develop algorithm to suggest listings

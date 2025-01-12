@@ -18,8 +18,8 @@ function FavoritedListings() {
         setLoading(true);
         try {
             const response = await retryWithExponentialBackoff(() =>
-                api.get("/api/listings/list_favorite_listings/"));
-            setListings(response.data.favorites || []);
+                api.get("/api/listings/list_saved_listings/"));
+            setListings(response.data || []);
         } catch (err) {
             console.error("Error fetching favorite listings:", err);
         } finally {
@@ -31,7 +31,7 @@ function FavoritedListings() {
     const handleRemoveFavorite = async (listingId) => {
         try {
             // Send a DELETE request to the backend
-            await api.delete(`/api/listings/${listingId}/remove_favorite_listing/`);
+            await api.delete(`/api/listings/${listingId}/remove_saved_listing/`);
             // Update the UI by filtering out the removed listing
             setListings((prevListings) =>
                 prevListings.filter((listing) => listing.id !== listingId)
