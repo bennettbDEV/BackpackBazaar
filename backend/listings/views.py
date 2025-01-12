@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from .models import Listing
+from .models import Listing, SavedListing
 from .serializers import ListingSerializer
 from .services.listing_services import ListingService
 
@@ -133,24 +133,41 @@ class ListingViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
     def save_listing(self, request, pk=None):
-        pass
+        listing = self.get_object()
+        # Check if already saved
+        if SavedListing.objects.filter(user=request.user, listing=listing).exists():
+            return Response({"detail": "Listing is already saved."}, status=status.HTTP_400_BAD_REQUEST)
+
+        SavedListing.objects.create(user=request.user, listing=listing)
+        return Response({"detail": "Listing saved successfully."}, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=["delete"], permission_classes=[IsAuthenticated])
     def remove_saved_listing(self, request, pk=None):
-        pass
+        listing = self.get_object()
+        saved_listing = SavedListing.objects.filter(user=request.user, listing=listing)
+        if saved_listing.exists():
+            saved_listing.delete()
+            return Response({"detail": "Listing removed from saved listings."}, status=status.HTTP_204_NO_CONTENT)
+        return Response({"detail": "Listing was not saved."}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, permission_classes=[IsAuthenticated])
-    def list_saved_listing(self, request):
-        pass
+    def list_saved_listings(self, request):
+        saved_listings = SavedListing.objects.filter(user=request.user)
+        listing_serializer = self.get_serializer([saved.listing for saved in saved_listings], many=True)
+        return Response(listing_serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
     def like_listing(self, request, pk=None):
         listing = self.get_object()
-        response = ListingService.like_listing(listing)
-        return response
+        ListingService.like_listing(listing)
+        return Response(
+            {"detail": "Listing liked successfully."}, status=status.HTTP_200_OK
+        )
 
     @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
     def dislike_listing(self, request, pk=None):
         listing = self.get_object()
-        response = ListingService.dislike_listing(listing)
-        return response
+        ListingService.dislike_listing(listing)
+        return Response(
+            {"detail": "Listing disliked successfully."}, status=status.HTTP_200_OK
+        )

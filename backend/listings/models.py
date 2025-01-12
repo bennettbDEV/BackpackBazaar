@@ -28,3 +28,8 @@ class Listing(models.Model):
     created_at = models.DateField(auto_now_add=True)
     last_modified_at = models.DateTimeField(auto_now=True)
     author_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class SavedListing(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="saved_listings")
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    saved_at = models.DateTimeField(auto_now_add=True)

@@ -89,9 +89,11 @@ class ListingService:
     @staticmethod
     @transaction.atomic
     def like_listing(listing):
-        pass
+        listing.likes += 1
+        listing.save()
 
     @staticmethod
     @transaction.atomic
     def dislike_listing(listing):
-        pass
+        listing.dislikes += 1
+        listing.save()
