@@ -8,7 +8,7 @@ from accounts.models import UserProfile
 class UserService:
     @staticmethod
     @transaction.atomic
-    def create_user(username, email, password, profile=None):
+    def create_user(username, password, email="", profile=None):
         user = User.objects.create(
             username=username,
             email=email,

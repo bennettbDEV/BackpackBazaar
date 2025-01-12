@@ -60,8 +60,8 @@ function Home() {
       .then((response) => response.data)
       .then((data) => {
         setListings(data.results);
-        setNextPage(data.links.next);
-        setPreviousPage(data.links.previous);
+        setNextPage(data.next);
+        setPreviousPage(data.previous);
       })
       .catch((err) => console.error("Error fetching listings:", err))
       .finally(() => setLoading(false));
@@ -74,7 +74,7 @@ function Home() {
   //Const: saves a listings
   const handleSaveListing = async (listingId) => {
     try {
-      await api.post(`/api/listings/${listingId}/favorite_listing/`);
+      await api.post(`/api/listings/${listingId}/save_listing/`);
       alert("Listing saved to favorites!");
     } catch (err) {
       if (err.response) {

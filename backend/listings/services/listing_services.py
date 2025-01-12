@@ -78,16 +78,6 @@ class ListingService:
 
     @staticmethod
     @transaction.atomic
-    def save_listing():
-        pass
-
-    @staticmethod
-    @transaction.atomic
-    def remove_saved_listing():
-        pass
-
-    @staticmethod
-    @transaction.atomic
     def like_listing(listing):
         listing.likes += 1
         listing.save()

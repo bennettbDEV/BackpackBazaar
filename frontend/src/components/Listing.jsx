@@ -3,6 +3,15 @@ import api from "../api";
 import { Link } from "react-router-dom";
 import "./styles/Listing.css";
 
+
+const conditionMapping = {
+    "FN": "Factory New",
+    "MW": "Minimal Wear",
+    "FR": "Fair",
+    "WW": "Well Worn",
+    "RD": "Refurbished"
+};
+
 function Listing({ listing, additionalAction }) {
     const [imageError, setImageError] = useState(false); // Track if the image fails to load
     const [likes, setLikes] = useState(listing.likes || 0);
@@ -10,7 +19,7 @@ function Listing({ listing, additionalAction }) {
     const formattedDate = new Date(listing.created_at).toLocaleDateString("en-US");
 
     // Image URL
-    const imageUrl = listing.image ? `${api.defaults.baseURL}${listing.image}` : null;
+    const imageUrl = listing.image ? listing.image : null;
     const fallbackImage = "/default-image.jpg"; // Fallback image URL
 
     const handleImageError = () => {
@@ -27,11 +36,13 @@ function Listing({ listing, additionalAction }) {
         api.post(`/api/listings/${listing.id}/dislike_listing/`).catch(console.error);
     };
 
+    const fullCondition = conditionMapping[listing.condition] || listing.condition;
+
     return (
         <div className="listing-container">
             <Link to={`/listings/${listing.id}`} className="listing-link">
                 <h2 className="listing-title">{listing.title}</h2>
-                <p className="listing-condition">Condition: {listing.condition}</p>
+                <p className="listing-condition">Condition: {fullCondition}</p>
                 <p className="listing-description">Description: {listing.description}</p>
                 <p className="listing-price">Price: ${listing.price}</p>
 
@@ -54,7 +65,7 @@ function Listing({ listing, additionalAction }) {
                 <p className="listing-date">Posted on: {formattedDate}</p>
                 <div className="listing-tags">
                     <strong>Tags: </strong>
-                    {listing.tags.map((tag, index) => (
+                    {listing.tags_out.map((tag, index) => (
                         <span key={index} className="listing-tag">{tag}</span>
                     ))}
                 </div>

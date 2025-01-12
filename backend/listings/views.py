@@ -53,7 +53,7 @@ class ListingViewSet(viewsets.ModelViewSet):
         return super().get_permissions()
 
     def create(self, request):
-        request_data = request.data.copy()
+        request_data = request.data
         request_data["author_id"] = request.user
 
         serializer = self.get_serializer(data=request_data)

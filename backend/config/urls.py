@@ -49,13 +49,13 @@ urlpatterns = [
 
     # Authentication
     # api/token/ is used for logging in, token/refresh/ is used to refresh access token
-    path("api/token/", LoginView.as_view(), name="get_token"),
-    path("test/token/", TokenObtainPairView.as_view(), name="get_token"),
+    #path("api/token/", LoginView.as_view(), name="get_token"),
+    path("api/token/", TokenObtainPairView.as_view(), name="get_token"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="refresh"),
 
     # Main api urls
-    path("api/", include("api.urls")),
-    path("test/", include(router.urls)),
+    #path("api/", include("api.urls")),
+    path("api/", include(router.urls)),
 
     # Media urls - this will provide images for any objects such as listings or users
     path("media/<path:image_path>/", ServeImageView.as_view(), name="serve_image"),

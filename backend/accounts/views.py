@@ -1,11 +1,13 @@
 from django.contrib.auth.models import User
 from rest_framework import status, viewsets
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from accounts.services.user_services import UserService
 
+from accounts.models import UserBlock
 from .serializers import UserSerializer
 
 
@@ -50,3 +52,51 @@ class UserViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         UserService.delete_user(instance.id)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    # Extra actions
+    @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
+    def block_user(self, request, pk=None):
+        blocked_user = self.get_object()
+        block = UserBlock.objects.filter(user=request.user, blocked_user=blocked_user)
+
+        if block.exists():
+            return Response(
+                {"detail": "User is already blocked."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        UserBlock.objects.create(user=request.user, blocked_user=blocked_user)
+        return Response(
+            {"detail": "User blocked successfully."}, status=status.HTTP_201_CREATED
+        )
+
+    @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
+    def unblock_user(self, request, pk=None):
+        blocked_user = self.get_object()
+        block = UserBlock.objects.filter(user=request.user, blocked_user=blocked_user)
+        if block.exists():
+            block.delete()
+            return Response(
+                {"detail": "User unblocked successfully."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        return Response(
+            {"detail": "User is not blocked."}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+    @action(detail=True, methods=["get"], permission_classes=[IsAuthenticated])
+    def is_user_blocked(self, request, pk=None):
+        blocked_user = self.get_object()
+        is_blocked = UserBlock.objects.filter(
+            user=request.user, blocked_user=blocked_user
+        ).exists()
+        block_detail = "User is blocked." if is_blocked else "User is not blocked."
+        return Response({"detail": block_detail}, status=status.HTTP_200_OK)
+
+    @action(detail=False, permission_classes=[IsAuthenticated])
+    def list_blocked_users(self, request):
+        blocked_users = UserBlock.objects.filter(user=request.user)
+        blocked_user_data = [
+            {"id": block.blocked_user.id, "username": block.blocked_user.username}
+            for block in blocked_users
+        ]
+        return Response(blocked_user_data, status=status.HTTP_200_OK)
