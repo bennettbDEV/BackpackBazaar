@@ -10,12 +10,14 @@ This project, Backpack Bazaar, is an extension of a group project I worked on pr
 
 - [X] Add dark mode
 - [X] Refactor front-end to use rems instead of px
-- [ ] Refactor authentication using Django's built in tools
+- [X] Refactor authentication using Django's built in tools
 - [X] Alter User/UserProfile to use Django's ORM
 - [ ] Test User/UserProfile
-- [ ] Alter Listing to use Django's ORM
+- [X] Alter Listing to use Django's ORM
+- [X] Test Listing
 - [ ] Alter Messages to use Django's ORM
-- [ ] Rework current tests
 - [ ] Add tests for every feature
+- [X] Frontend Integration
+- [ ] Test Frontend more thoroughly
 - [ ] Add automatic listing classification
 - [ ] Develop algorithm to suggest listings
