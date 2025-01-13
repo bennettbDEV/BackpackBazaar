@@ -1,15 +1,13 @@
-# Create your models here.
-"""
-CLASS: Message
-"""
+from django.contrib.auth.models import User
+from django.db import models
 
 class Message:
-    # We cant use django model stuff due to our custom db implementation
-    # message_text = models.TextField()
-
-    # Constructor
-    def __init__(self, id, sender_id, receiver_id, content):
-        self.id = id
-        self.sender_id = sender_id
-        self.receiver_id = receiver_id
-        self.content = content
+    content = models.CharField(max_length=150)
+    edited_at = models.DateTimeField(auto_now=True)
+    edited = models.BooleanField(default=False)
+    
+    # Tentative "on_delete=models.CASCADE" - should messages stay after user is deleted?
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sending")
+    receiver = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="sent_by"
+    )

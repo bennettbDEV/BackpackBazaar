@@ -8,7 +8,7 @@ function Message({ message }) {
     useEffect(() => {
         const fetchSenderDetails = async () => {
             try {
-                const response = await api.get(`/api/users/${message.sender_id}/`);
+                const response = await api.get(`/api/users/${message.sender}/`);
                 setSender(response.data);
             } catch (error) {
                 console.error("Error fetching sender details:", error);
@@ -16,7 +16,7 @@ function Message({ message }) {
         };
 
         fetchSenderDetails();
-    }, [message.sender_id]);
+    }, [message.sender]);
 
     return (
         <div className="message-container">
