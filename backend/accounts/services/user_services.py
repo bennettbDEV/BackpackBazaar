@@ -20,6 +20,12 @@ class UserService:
                 location=profile.get("location"),
                 image=profile.get("image"),
             )
+        else:
+            UserProfile.objects.create(
+                user=user,
+                location="",
+                image=None,
+            )
         return user
 
     @staticmethod
