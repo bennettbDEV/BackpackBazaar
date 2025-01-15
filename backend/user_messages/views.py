@@ -29,6 +29,11 @@ class MessageViewSet(viewsets.ModelViewSet):
         # Only the sender can modify their message
         if self.get_object().sender != self.request.user:
             raise PermissionDenied("You are not allowed to edit this message.")
+        
+        # Only allow updates to content field
+        if any(field for field in serializer.validated_data if field != "content"):
+            raise PermissionDenied("Only the 'content' field can be updated.")
+    
         # When message is updated, set updated to true
         serializer.save(edited=True)
 
