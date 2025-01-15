@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-class Message:
+class Message(models.Model):
     content = models.CharField(max_length=150)
+    created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
     edited = models.BooleanField(default=False)
     
