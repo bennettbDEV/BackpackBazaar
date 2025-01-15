@@ -13,6 +13,7 @@ from .serializers import MessageSerializer
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+    pagination_class = None # temporary
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
