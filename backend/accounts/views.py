@@ -41,12 +41,38 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
+        kwargs['partial'] = False
+        return self._update_profile(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self._update_profile(request, *args, **kwargs)
+
+    def _update_profile(self, request, *args, **kwargs):
         partial = kwargs.pop("partial", False)
         instance = self.get_object()
+
+        # Grab profile fields from request data
+        location = request.data.get("location", None)
+        image = request.FILES.get("image", None)
+
+        # Validate and update user fields
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         user = UserService.update_user(instance.id, **serializer.validated_data)
-        return Response(self.get_serializer(user).data)
+
+        # Update specific profile fields if given (if they werent nested in profile)
+        profile = instance.profile
+        if profile:
+            # Explicit check for fields to be "None"
+            if location is not None:
+                profile.location = location
+            if image is not None:
+                profile.image = image
+            profile.save()
+
+        response_data = self.get_serializer(user).data
+        return Response(response_data)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
