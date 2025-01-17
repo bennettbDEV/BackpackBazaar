@@ -116,9 +116,9 @@ const SingleListing = () => {
                             <div className="author-image">
                                 <img
                                     src={
-                                        imageError || !author.image
+                                        imageError || !author.profile.image
                                             ? fallbackImage
-                                            : `${api.defaults.baseURL}${author.image}`
+                                            : `${api.defaults.baseURL}${author.profile.image}`
                                     }
                                     alt={author.username || "Author"}
                                     style={{ width: "150px", height: "auto", borderRadius: "50%" }}
@@ -127,7 +127,7 @@ const SingleListing = () => {
                             </div>
                             <p>
                                 <strong>Name:</strong> {author.username} <br></br>
-                                <strong>Location:</strong> {author.location || "Not given"}
+                                <strong>Location:</strong> {author.profile.location || "Not given"}
                             </p>
 
                             {/* Message Form */}
