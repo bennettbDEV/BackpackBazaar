@@ -8,6 +8,7 @@ import InboxPreview from "../components/InboxPreview.jsx";
 function Messages() {
     const [messages, setMessages] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedListing, setSelectedListing] = useState(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -26,8 +27,9 @@ function Messages() {
         }
     };
 
-    const handleSelectUser = (user) => {
+    const handleSelectConvo = (user, listing) => {
         setSelectedUser(user);
+        setSelectedListing(listing);
     };
 
     return (
@@ -44,14 +46,14 @@ function Messages() {
                             <InboxPreview
                                 key={message.id}
                                 message={message}
-                                onSelectUser={handleSelectUser}
+                                onSelectConvo={(user) => handleSelectConvo(user, message.related_listing)}
                             />
                         ))
                     )}
                 </div>
                 <div className="message-feed">
                     {selectedUser ? (
-                        <MessageFeed userId={selectedUser} />
+                        <MessageFeed userId={selectedUser} listingId={selectedListing}/>
                     ) : (
                         <p>Select a conversation to start chatting.</p>
                     )}

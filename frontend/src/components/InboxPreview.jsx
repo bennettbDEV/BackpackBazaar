@@ -2,14 +2,14 @@ import React from "react";
 import { useUser } from '../contexts/UserContext.jsx';
 import "./styles/InboxPreview.css";
 
-function InboxPreview({ message, onSelectUser }) {
+function InboxPreview({ message, onSelectConvo }) {
     const { userData, isLoading } = useUser(); // Access user data from context
     const { content, sender, receiver, related_listing, created_at } = message;
     const snippet = content.length > 30 ? content.slice(0, 30) + "..." : content;
 
     const handleClick = () => {
-        const otherUser = sender === userData.id ? receiver : sender;  
-        onSelectUser(otherUser);
+        const otherUser = sender === userData.id ? receiver : sender;
+        onSelectConvo(otherUser);
     };
 
     return (

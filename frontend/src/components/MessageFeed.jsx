@@ -5,26 +5,33 @@ import testImg from "../assets/usericon.png";
 import { retryWithExponentialBackoff } from "../utils/retryWithExponentialBackoff";
 import "./styles/MessageFeed.css";
 
-function MessageFeed({ userId }) {
+function MessageFeed({ userId, listingId }) {
 	const [messages, setMessages] = useState([]);
 	const [newMessage, setNewMessage] = useState("");
 	const [userDetails, setUserDetails] = useState({});
-	const [loading, setLoading] = useState(false);
 	const [listingDetails, setListingDetails] = useState(null);
+	const [loading, setLoading] = useState(false);
 
 	// userId is the other user
-	const imageUrl = userDetails?.profile?.image ? `${api.defaults.baseURL}${userDetails.profile.image}` : testImg;
+	const userImageUrl = userDetails?.profile?.image ? `${api.defaults.baseURL}${userDetails.profile.image}` : testImg;
 
 
 	useEffect(() => {
-		fetchConversation();
-		fetchUserDetails();
-	}, [userId]);
+		if (userId) {
+			fetchUserDetails();
+		}
+		if (listingId) {
+			fetchListingDetails();
+		}
+		if (userId && listingId) {
+			fetchConversation();
+		}
+	}, [userId, listingId]);
 
 	const fetchConversation = async () => {
 		try {
 			const response = await api.get(
-				`/api/messages/with_user/?user_id=${userId}`
+				`/api/messages/with_user/?user=${userId}&listing=${listingId}`
 			);
 			setMessages(response.data);
 		} catch (error) {
@@ -41,15 +48,24 @@ function MessageFeed({ userId }) {
 		} catch (error) {
 			console.error("Error fetching user details:", error);
 		}
-		finally {
-            setLoading(false);
-        }
+	};
+
+	const fetchListingDetails = async () => {
+		try {
+			const response = await retryWithExponentialBackoff(() => api.get(`/api/listings/${listingId}/`));
+			setListingDetails(response.data);
+		} catch (error) {
+			console.error("Error fetching listing details:", error);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	const handleSendMessage = async () => {
 		try {
 			await api.post("/api/messages/", {
 				receiver: userId,
+				related_listing: listingId,
 				content: newMessage,
 			});
 			setNewMessage("");
@@ -62,18 +78,24 @@ function MessageFeed({ userId }) {
 	return (
 		<div className="message-feed-view">
 			<div className="message-feed-header">
+
 				<div className="header-left">
-					{listingDetails && <img src={listingDetails.image_url} alt="Listing" />}
-					<div className="listing-title">
-						{listingDetails ? listingDetails.title : "No Listing"}
-					</div>
+					{listingDetails ? (
+						<>
+							<img src={listingDetails.image} alt="Listing" />
+							<div className="listing-title">{listingDetails.title}</div>
+						</>
+					) : (
+						<span>Loading listing...</span>
+					)}
 				</div>
+
 				<div className="header-right">
 					{userDetails ? (
 						<>
 							<span>{userDetails.username}</span>
-							<img src={imageUrl} alt="User" width="25"/>
-							
+							<img src={userImageUrl} alt="User" width="25" />
+
 						</>
 					) : (
 						<span>Loading user data...</span>
