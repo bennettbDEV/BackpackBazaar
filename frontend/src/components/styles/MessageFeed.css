@@ -1,5 +1,34 @@
-.messages-feed{
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    min-height: calc(100vh);
+.message-feed-view {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.new-message {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 0.5rem;
+}
+
+.new-message input {
+    flex-grow: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 0.5rem;
+}
+
+.new-message button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.new-message button:hover {
+    background-color: #0056b3;
 }
