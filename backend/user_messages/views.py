@@ -1,99 +1,108 @@
-# user_messages/views.py
-
+from django.contrib.auth.models import User
+from django.db import models
+from django.db.models import Max
+from listings.models import Listing
 from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .message_mediators import MessageMediator
+from .models import Message
 from .serializers import MessageSerializer
 
 
-class MessageViewSet(viewsets.GenericViewSet):
+class MessageViewSet(viewsets.ModelViewSet):
+    queryset = Message.objects.all()
     serializer_class = MessageSerializer
+    pagination_class = None  # temporary
     permission_classes = [IsAuthenticated]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.message_mediator = MessageMediator()
+    def get_queryset(self):
+        # Show most recent message for each unique (reciever, related_listing) pair
+        latest_messages = (
+            Message.objects.filter(
+                models.Q(sender=self.request.user)
+                | models.Q(receiver=self.request.user)
+            )
+            # Group by related_related listing_id and sender_id (or reciever_id)
+            .values("related_listing", "sender", "receiver")
+            # Save id for the newest message in each distinct group
+            .annotate(latest_message_id=Max("id"))
+            # Create a list of all the collected message ids
+            .values_list("latest_message_id", flat=True)
+        )
 
-    def retrieve(self, request, pk):
-        """Retrieves the specified Message.
-        Args:
-            request (request): DRF request object, must have message id
-            pk (int, optional): The id of the message
-        Returns:
-            Response: A DRF Response object with an HTTP status.
-        """
+        return (
+            # Filter ids that we collected above
+            Message.objects.filter(id__in=latest_messages)
+            .select_related("sender", "receiver", "related_listing")
+            .order_by("-created_at")
+        )
 
-        if pk:
-            message = self.message_mediator.retrieve_message(request, pk)
-            if message:
-                serializer = MessageSerializer(
-                    data={
-                        "id": message["id"],
-                        "sender_id": message["sender_id"],
-                        "receiver_id": message["receiver_id"],
-                        "content": message["content"],
-                    }
-                )
-                if serializer.is_valid():
-                    return Response(serializer.data, status=status.HTTP_200_OK)
-                else:
-                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response({"error": "Message with that id from that User is not found."}, status=status.HTTP_404_NOT_FOUND,)
-        else:
-            return Response({"error": "Message id not provided in link."}, status=status.HTTP_404_NOT_FOUND,)
+    def perform_create(self, serializer):
+        # Set sender to currently authenticated user
+        serializer.save(sender=self.request.user)
 
-    def list(self, request):
-        """Retrieves all messages received by the calling user.
-        Args:
-            request (Request): DRF request object
-        Returns:
-            Response: A DRF Response object with an HTTP status.
-        """
+    def perform_update(self, serializer):
+        # Only the sender can modify their message
+        if self.get_object().sender != self.request.user:
+            raise PermissionDenied("You are not allowed to edit this message.")
 
-        # Gets all messages and return it -> could be modified later to be filtered
-        messages = self.message_mediator.retrieve_all_messages(request)
-        serializer = self.get_serializer(messages, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        # Only allow updates to content field
+        if any(field for field in serializer.validated_data if field != "content"):
+            raise PermissionDenied("Only the 'content' field can be updated.")
 
-    def destroy(self, request, pk=None):
-        """Deletes the specified Message.
+        # When message is updated, set updated to true
+        serializer.save(edited=True)
 
-        delete a message from a user(who retrieved it) given message id and user
-        Args:
-            request (Request): DRF request object, must have message id.
-            pk (int, optional): The id of the User.
+    def destroy(self, request, *args, **kwargs):
+        message = self.get_object()
+        if message.sender != request.user:
+            raise PermissionDenied("You are not allowed to delete this message.")
+        return super().destroy(request, *args, **kwargs)
 
-        Returns:
-            Response: A DRF Response object with an HTTP status.
-        """
+    # List messages between the current user and another user specified by user_id
+    # Full url example: /messages/with_user/?user_id=1
+    @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
+    def with_user(self, request):
+        user_id = request.query_params.get("user")
+        listing_id = request.query_params.get("listing")
+
+        if not user_id:
+            return Response(
+                {"error": "user parameter is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if not listing_id:
+            return Response(
+                {"error": "listing parameter is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         try:
-            message_id = request.data.get("id")
-            response = self.message_mediator.delete_message(request.user.id, message_id)
-            return response
-        except Exception as e:
-            print(str(e))
-            return Response({"error": "Server error occured."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR,)
-
-    def create(self, request):
-        """Creates and sends a message from a sender to a receiver User.
-        Args:
-            request (Request): DRF request object, must have receiver(User Object) and content for message
-            pk (int, optional): The id of the recieving User.
-        Returns:
-            Response: A DRF Response object with an HTTP status.
-        """
-
-        serializer = self.get_serializer(data=request.data)
-        # check if data is valid
-        if serializer.is_valid():
-            user_id = request.user.id
-            response = self.message_mediator.send_message(
-                serializer.validated_data, user_id
+            other_user = User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "User not found."}, status=status.HTTP_404_NOT_FOUND
             )
-            return response
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            related_listing = Listing.objects.get(pk=listing_id)
+        except Listing.DoesNotExist:
+            return Response(
+                {"error": "Listing not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        # models.Q used for more eloborate query
+        # to retrieve all messages between specified users
+        messages = Message.objects.filter(
+            models.Q(related_listing=related_listing)
+            & (
+                (models.Q(sender=self.request.user) & models.Q(receiver=other_user))
+                | (models.Q(sender=other_user) & models.Q(receiver=self.request.user))
+            )
+        ).order_by("created_at")
+
+        serializer = self.get_serializer(messages, many=True)
+        return Response(serializer.data)

@@ -19,7 +19,6 @@ Including another URLconf
 """
 
 from accounts.views import UserViewSet
-from listings.views import ListingViewSet
 from api.views import LoginView, ServeImageView
 from django.contrib import admin
 from django.urls import include, path
@@ -29,34 +28,31 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
+from listings.views import ListingViewSet
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from user_messages.views import MessageViewSet
 
 router = DefaultRouter()
 router.register(r"users", UserViewSet, basename="user")
 router.register(r"listings", ListingViewSet, basename="listing")
+router.register(r"messages", MessageViewSet, basename="message")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("favicon.ico", RedirectView.as_view(url="/static/favicon.ico")),
-    
     # REST API Documentation views
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
-    path(
-        "swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"
-    ),
+    path("swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
     path("redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
-
     # Authentication
     # api/token/ is used for logging in, token/refresh/ is used to refresh access token
-    #path("api/token/", LoginView.as_view(), name="get_token"),
+    # path("api/token/", LoginView.as_view(), name="get_token"),
     path("api/token/", TokenObtainPairView.as_view(), name="get_token"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="refresh"),
-
     # Main api urls
-    #path("api/", include("api.urls")),
+    # path("api/", include("api.urls")),
     path("api/", include(router.urls)),
-
     # Media urls - this will provide images for any objects such as listings or users
     path("media/<path:image_path>/", ServeImageView.as_view(), name="serve_image"),
     path(

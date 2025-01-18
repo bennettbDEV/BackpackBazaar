@@ -17,7 +17,7 @@ function Profile() {
     const [userId, setUserId] = useState(null);
     const [userData, setUserData] = useState(null);
 
-    const imageUrl = userData?.image ? `${api.defaults.baseURL}${userData.image}` : testImg;
+    const imageUrl = userData?.profile.image ? `${api.defaults.baseURL}${userData.profile.image}` : testImg;
 
     useEffect(() => {
         const token = localStorage.getItem(ACCESS_TOKEN);
@@ -95,7 +95,7 @@ function Profile() {
                 {userData ? (
                     <>
                         <p>Username: {userData.username}</p>
-                        <p>Location: {userData.location || "Not given"}</p>
+                        <p>Location: {userData.profile.location || "Not given"}</p>
                         
                         <img className="profile-image" src={imageUrl} width="150" alt="Profile" />
                         <br></br>

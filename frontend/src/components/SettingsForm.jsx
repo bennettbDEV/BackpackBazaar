@@ -8,7 +8,7 @@ function SettingsForm({ userData, userId }) {
     const [formData, setFormData] = useState({
         username: userData?.username || "",
         email: userData?.email || "",
-        location: userData?.location || "",
+        location: userData?.profile.location || "",
         image: null,
         password: "",
         confirmPassword: "",

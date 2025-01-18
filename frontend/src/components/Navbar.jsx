@@ -9,8 +9,8 @@ import homeIcon from '../assets/homeicon.png'; // Import the home icon
 
 const Navbar = () => {
   const { userData, isLoading } = useUser(); // Access user data from context
-  const userImage = userData?.image
-    ? `${api.defaults.baseURL}${userData.image}`
+  const userImage = userData?.profile.image
+    ? `${api.defaults.baseURL}${userData.profile.image}`
     : userIcon; // Set fallback image if user image is not available
 
   return (

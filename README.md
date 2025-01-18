@@ -15,7 +15,9 @@ This project, Backpack Bazaar, is an extension of a group project I worked on pr
 - [ ] Test User/UserProfile
 - [X] Alter Listing to use Django's ORM
 - [X] Test Listing
-- [ ] Alter Messages to use Django's ORM
+- [X] Alter Messages to use Django's ORM
+- [ ] Test Messages
+- [X] New message frontend
 - [ ] Add tests for every feature
 - [X] Frontend Integration
 - [ ] Test Frontend more thoroughly

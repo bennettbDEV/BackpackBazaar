@@ -20,6 +20,12 @@ class UserService:
                 location=profile.get("location"),
                 image=profile.get("image"),
             )
+        else:
+            UserProfile.objects.create(
+                user=user,
+                location="",
+                image=None,
+            )
         return user
 
     @staticmethod
@@ -34,6 +40,7 @@ class UserService:
             user.password = make_password(password)
         user.save()
 
+        # If explicit profile with extra data is added - save the new profile data
         if profile:
             user_profile, _ = UserProfile.objects.get_or_create(user=user)
             if "location" in profile:
