@@ -82,8 +82,11 @@ function MessageFeed({ userId, listingId }) {
 				<div className="header-left">
 					{listingDetails ? (
 						<>
-							<img src={listingDetails.image} alt="Listing" />
-							<div className="listing-title">{listingDetails.title}</div>
+							<img src={listingDetails.image} alt="Listing" width="25"/>
+							<div className="listing-details">
+								<div className="listing-title">{listingDetails.title}</div>
+								<div className="listing-price">${listingDetails.price}</div>
+							</div>
 						</>
 					) : (
 						<span>Loading listing...</span>
@@ -93,7 +96,7 @@ function MessageFeed({ userId, listingId }) {
 				<div className="header-right">
 					{userDetails ? (
 						<>
-							<span>{userDetails.username}</span>
+							<span>You are chatting with: {userDetails.username}</span>
 							<img src={userImageUrl} alt="User" width="25" />
 
 						</>

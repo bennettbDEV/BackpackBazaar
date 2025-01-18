@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import OuterRef, Subquery, Max
+from django.db.models import Max
+from listings.models import Listing
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
@@ -8,7 +9,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Message
-from listings.models import Listing
 from .serializers import MessageSerializer
 
 
@@ -20,20 +20,24 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         # Show most recent message for each unique (reciever, related_listing) pair
-        latest_message_ids = (
+        latest_messages = (
             Message.objects.filter(
-                sender=self.request.user,
-                receiver=OuterRef("receiver"),
-                related_listing=OuterRef("related_listing"),
+                models.Q(sender=self.request.user)
+                | models.Q(receiver=self.request.user)
             )
-            .order_by("-created_at")  # Order by most recent
-            .values("id")[:1]  # Take the most recent message ID
+            # Group by related_related listing_id and sender_id (or reciever_id)
+            .values("related_listing", "sender", "receiver")
+            # Save id for the newest message in each distinct group
+            .annotate(latest_message_id=Max("id"))
+            # Create a list of all the collected message ids
+            .values_list("latest_message_id", flat=True)
         )
 
         return (
-            Message.objects.filter(id__in=Subquery(latest_message_ids))
-            .select_related("receiver", "related_listing")
-            .distinct()
+            # Filter ids that we collected above
+            Message.objects.filter(id__in=latest_messages)
+            .select_related("sender", "receiver", "related_listing")
+            .order_by("-created_at")
         )
 
     def perform_create(self, serializer):

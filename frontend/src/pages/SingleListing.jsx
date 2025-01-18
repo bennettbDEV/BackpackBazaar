@@ -89,7 +89,8 @@ const SingleListing = () => {
 
         try {
             await api.post("/api/messages/", {
-                receiver_id: author.id,
+                receiver: author.id,
+                related_listing: listing.id,
                 content: formData.content,
             });
             setFormData({ content: "" });

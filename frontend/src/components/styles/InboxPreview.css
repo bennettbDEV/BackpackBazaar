@@ -20,6 +20,7 @@
 
 .details {
     flex-grow: 1;
+    color: var(--text-color)
 }
 
 .details h4 {
@@ -31,7 +32,6 @@
 .details p {
     margin: 0;
     font-size: 0.9rem;
-    color: var(--text-color);
 }
 
 .snippet {
@@ -40,5 +40,4 @@
 
 .timestamp {
     font-size: 0.8rem;
-    color: var(--text-color);
 }
