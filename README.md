@@ -31,7 +31,7 @@ To install the dependencies and run the project as it is now, follow these simpl
 Install [Node.js](https://nodejs.org/en/download/package-manager)(version 20 or newer) and [Python](https://www.python.org/downloads/)(version 3.10 or newer)
 1. Clone the repo (into the currect directory)
 ```sh
-git clone https://github.com/bennettbDEV/CollegeMarketplace.git .
+git clone https://github.com/bennettbDEV/BackpackBazaar.git .
 ```
 2. (Optionally) Set up a [virtual environment](https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/)
 ```sh
@@ -74,7 +74,7 @@ echo VITE_API_URL="http://localhost:8000/" > .env
 ```sh
 npm run dev
 ```
-10. After splitting or creating a new terminal, navigate to CollegeMarketplace/backend
+10. After splitting or creating a new terminal, navigate to BackpackBazaar/backend
 ```sh
 cd ..
 cd backend
