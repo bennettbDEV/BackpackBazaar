@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Max
+from django.db.models import Case, When, Max, Q, F
 from listings.models import Listing
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -22,11 +22,24 @@ class MessageViewSet(viewsets.ModelViewSet):
         # Show most recent message for each unique (reciever, related_listing) pair
         latest_messages = (
             Message.objects.filter(
-                models.Q(sender=self.request.user)
-                | models.Q(receiver=self.request.user)
+                Q(sender=self.request.user) | Q(receiver=self.request.user)
+            )
+            .annotate(
+                # Normalize the sender, reciever id order, so we dont retrieve multiple messages for the same conversation
+                # Ex. ids (sender=5, receiver=3, related_listing=1) would retrieve a message
+                # and ids (sender=3, receiver=5, related_listing=1) would retrieve a message from same convo - which we dont want
+                # Thus the order will always be (a,b) where a<b
+                user_one=Case(
+                    When(sender__lt=F("receiver"), then=F("sender")),
+                    default=F("receiver"),
+                ),
+                user_two=Case(
+                    When(sender__lt=F("receiver"), then=F("receiver")),
+                    default=F("sender"),
+                ),
             )
             # Group by related_related listing_id and sender_id (or reciever_id)
-            .values("related_listing", "sender", "receiver")
+            .values("related_listing", "user_one", "user_two")
             # Save id for the newest message in each distinct group
             .annotate(latest_message_id=Max("id"))
             # Create a list of all the collected message ids
