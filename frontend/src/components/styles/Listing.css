@@ -52,12 +52,11 @@
 .listing-feedback {
   margin-top: 0.625rem;
   display: flex;
-  gap: 0.625rem;
+  gap: 0.2rem;
 }
 
 /* Like/Dislike buttons */
-.like-button,
-.dislike-button {
+.react-button {
   color: var(--text-color);
   background-color: transparent;
   border: none;
