@@ -4,7 +4,7 @@ from listings.models import Listing
 
 
 class Message(models.Model):
-    content = models.CharField(max_length=150)
+    content = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
     edited = models.BooleanField(default=False)
