@@ -17,18 +17,21 @@
 
 .filter-group {
   margin-bottom: 0.75rem;
+  font-weight: bold;
 }
 
-.filter-group label {
-  display: block;
-  margin-bottom: 0.25rem;
-  font-weight: bold;
+/* these are weird shenanigans needed to get all three input boxes to be equal length */
+input, select {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .filter-group input,
 .filter-group select {
   width: 95%;
   padding: 0.5rem;
+  margin:0.5rem;
   background-color: var(--bg-color);
   color: var(--text-color);
   border: 1px solid var(--bg-highlight);

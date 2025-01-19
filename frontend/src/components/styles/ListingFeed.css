@@ -43,9 +43,9 @@
   background: var(--reggie-red);
   color: white;
   border: none;
-  border-radius: 50%;
-  width: 1.5625rem;
-  height: 1.5625rem;
+  border-radius: 0.3125rem;
+  width: 2.5625rem;
+  height: 1.9625rem;
   cursor: pointer;
   font-size: 1rem;
   display: flex;

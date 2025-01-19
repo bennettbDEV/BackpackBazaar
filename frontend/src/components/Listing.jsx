@@ -72,10 +72,10 @@ function Listing({ listing, additionalAction }) {
             </Link>
 
             <div className="listing-feedback">
-                <button className="like-button" onClick={handleLike}>
+                <button className="react-button" onClick={handleLike}>
                     👍 {likes}
                 </button>
-                <button className="dislike-button" onClick={handleDislike}>
+                <button className="react-button" onClick={handleDislike}>
                     👎 {dislikes}
                 </button>
             </div>

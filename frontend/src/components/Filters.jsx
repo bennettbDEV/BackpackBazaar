@@ -20,7 +20,7 @@ const Filters = ({ onFilterChange }) => {
       <h3>Filter Listings</h3>
       
       <div className="filter-group">
-        <label htmlFor="minPrice">Minimum Price:</label>
+        <label htmlFor="minPrice">Minimum Price</label>
         <input
           type="number"
           id="minPrice"
@@ -31,7 +31,7 @@ const Filters = ({ onFilterChange }) => {
       </div>
 
       <div className="filter-group">
-        <label htmlFor="maxPrice">Maximum Price:</label>
+        <label htmlFor="maxPrice">Maximum Price</label>
         <input
           type="number"
           id="maxPrice"
@@ -42,7 +42,7 @@ const Filters = ({ onFilterChange }) => {
       </div>
 
       <div className="filter-group">
-        <label htmlFor="condition">Condition:</label>
+        <label htmlFor="condition">Condition</label>
         <select
           id="condition"
           value={condition}

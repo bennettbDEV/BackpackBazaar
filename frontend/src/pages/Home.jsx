@@ -63,7 +63,7 @@ function Home() {
         setNextPage(data.next);
         setPreviousPage(data.previous);
       })
-      .catch((err) => console.error("Error fetching listings:", err))
+      .catch((err) => console.error("Error fetching listings: ", err))
       .finally(() => setLoading(false));
   };
 
