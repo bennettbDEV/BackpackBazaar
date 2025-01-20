@@ -1,12 +1,15 @@
+import React, { useState, useEffect } from "react";
 import NavBar from "../components/Navbar.jsx";
 import MessageFeed from "../components/MessageFeed.jsx";
+import { useUser } from '../contexts/UserContext.jsx';
 import api from "../api";
-import React, { useState, useEffect } from "react";
 import "./styles/Messages.css";
 import InboxPreview from "../components/InboxPreview.jsx";
 
 function Messages() {
+    const { userData, isLoading } = useUser();
     const [messages, setMessages] = useState([]);
+    const [firstMessage, setFirstMessage] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedListing, setSelectedListing] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -15,11 +18,27 @@ function Messages() {
         fetchMessages();
     }, []);
 
+    useEffect(() => {
+        if (firstMessage && userData) {
+            // Ensure selected user is not the current user
+            const userToMessage = userData.id !== firstMessage.sender
+                ? firstMessage.sender 
+                : firstMessage.receiver;
+            setSelectedUser(userToMessage);
+            setSelectedListing(firstMessage.related_listing);
+        }
+    }, [firstMessage, userData]);
+
     const fetchMessages = async () => {
         setLoading(true);
         try {
             const response = await api.get("/api/messages/");
-            setMessages(response.data || []);
+            const fetchedMessages = response.data || [];
+            setMessages(fetchedMessages);
+
+            if (fetchedMessages.length > 0) {
+                setFirstMessage(fetchedMessages[0]);
+            }
         } catch (err) {
             console.error("Error fetching messages:", err);
         } finally {
@@ -53,7 +72,7 @@ function Messages() {
                 </div>
                 <div className="message-feed">
                     {selectedUser ? (
-                        <MessageFeed userId={selectedUser} listingId={selectedListing}/>
+                        <MessageFeed userId={selectedUser} listingId={selectedListing} />
                     ) : (
                         <p>Select a conversation to start chatting.</p>
                     )}
