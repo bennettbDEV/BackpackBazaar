@@ -7,16 +7,19 @@ import { useUser } from '../contexts/UserContext.jsx';
 function ChatMessage({ message }) {
     const { content, sender, edited, created_at } = message;
     const { userData, isLoading } = useUser(); // Access user data from context
-    
 
     return (
-        <div className={`chat-message ${sender == userData.id ? "self" : "other"}`}>
+        // selects between self or other to apply css accordingly
+        <>
+            <div className={`chat-message ${sender == userData.id ? "self" : "other"}`}>
             <div className="message-content">
-                <p>{content}</p>
+                <span className="message-text">{content} </span>
                 {edited && <span className="edited">(edited)</span>}
+                <span className="timestamp"><i>{new Date(created_at).toLocaleTimeString()}, {new Date(created_at).toLocaleDateString()}</i></span>
             </div>
-            <span className="timestamp">{new Date(created_at).toLocaleTimeString()}</span>
-        </div>
+            </div>
+        </>
+        
     );
 }
 

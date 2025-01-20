@@ -1,9 +1,9 @@
 .chat-message {
     max-width: 70%;
-    margin-bottom: 0.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    border-radius: 10px;
+    margin-bottom: 0.37rem;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+    border-radius: 8px;
     position: relative;
 }
 
@@ -19,9 +19,12 @@
     color: var(--alt-text-color);
 }
 
+/* the whole box interior */
 .message-content {
     font-size: 0.95rem;
     word-wrap: break-word;
+    padding:0.24rem;
+    
 }
 
 .edited {
@@ -30,8 +33,13 @@
 }
 
 .timestamp {
-    font-size: 0.7rem;
+    font-size: 0.5rem;
     color: var(--alt-text-color);
     text-align: right;
     margin-top: 0.05rem;
+}
+
+.message-text
+{
+    padding-right:10px;
 }
