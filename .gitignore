@@ -5,3 +5,6 @@
 **tmp
 .env
 backend/db.sqlite3
+backend/db.sqlite3
+backend/media/listings/ab6761670000ecd431c5936cd1e26b3267760b8c.jpg
+backend/media/profile_images/ab67616d00001e024c7bfd782a785dde6adb113e.jpg

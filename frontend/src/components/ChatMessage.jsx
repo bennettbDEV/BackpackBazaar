@@ -10,12 +10,13 @@ function ChatMessage({ message }) {
 
     return (
         // selects between self or other to apply css accordingly
+         // {new Date(created_at).toLocaleDateString()} to show the date, will use this on hover in a little 
         <>
             <div className={`chat-message ${sender == userData.id ? "self" : "other"}`}>
             <div className="message-content">
                 <span className="message-text">{content} </span>
-                {edited && <span className="edited">(edited)</span>}
-                <span className="timestamp"><i>{new Date(created_at).toLocaleTimeString()}, {new Date(created_at).toLocaleDateString()}</i></span>
+                <span className="timestamp"><i>{new Date(created_at).toLocaleTimeString()}</i></span>
+                {edited && <span className="edited"><i> (edited)</i></span>}
             </div>
             </div>
         </>

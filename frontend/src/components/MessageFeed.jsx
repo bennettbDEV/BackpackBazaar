@@ -79,29 +79,30 @@ function MessageFeed({ userId, listingId }) {
 		<div className="message-feed-view">
 			<div className="message-feed-header">
 
+				
+
+				<div className="header-right">
+					{userDetails ? (
+						<>
+							<img src={userImageUrl} alt="User" width="25" />
+							<span><b>{userDetails.username}</b></span>
+						</>
+					) : (
+						<span>Loading user data...</span>
+					)}
+				</div>
+
 				<div className="header-left">
 					{listingDetails ? (
 						<>
 							<img src={listingDetails.image} alt="Listing" width="25"/>
 							<div className="listing-details">
-								<div className="listing-title">{listingDetails.title}</div>
-								<div className="listing-price">${listingDetails.price}</div>
+								<span className="listing-title">{listingDetails.title}</span>
+								<span className="listing-price">${listingDetails.price}</span>
 							</div>
 						</>
 					) : (
 						<span>Loading listing...</span>
-					)}
-				</div>
-
-				<div className="header-right">
-					{userDetails ? (
-						<>
-							<span>You are chatting with: {userDetails.username}</span>
-							<img src={userImageUrl} alt="User" width="25" />
-
-						</>
-					) : (
-						<span>Loading user data...</span>
 					)}
 				</div>
 			</div>

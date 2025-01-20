@@ -15,7 +15,7 @@
 
 .other {
     align-self: flex-start;
-    background-color: rgb(82, 82, 181);
+    background-color: var(--bg-highlight);
     color: var(--alt-text-color);
 }
 
@@ -30,6 +30,7 @@
 .edited {
     font-size: 0.8rem;
     color: var(--alt-text-color);
+    padding-left:0.24rem;
 }
 
 .timestamp {
