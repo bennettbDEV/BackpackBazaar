@@ -3,7 +3,6 @@ import os
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
 from django.urls import reverse
 from listings.models import Listing, Tag
 from PIL import Image
@@ -79,6 +78,83 @@ class CreateMessageTestCase(MessageBaseTestCase):
         response = self.client.post(reverse("message-list"), data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Message.objects.count(), 3)
+
+
+class RetrieveMessageTestCase(MessageBaseTestCase):
+    def test_retrieve_message(self):
+        response = self.client.get(
+            reverse("message-detail", kwargs={"pk": self.message1.pk})
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class UpdateMessageTestCase(MessageBaseTestCase):
+    def test_update_message_as_sender(self):
+        url = reverse("message-detail", kwargs={"pk": self.message1.pk})
+
+        data = {"content": "Updated message"}
+        response = self.client.put(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.message1.refresh_from_db()
+        self.assertEqual(self.message1.content, "Updated message")
+        self.assertTrue(self.message1.edited)
+
+    def test_update_message_as_non_sender(self):
+        self.client.force_authenticate(user=self.user2)
+        url = reverse("message-detail", kwargs={"pk": self.message1.pk})
+
+        data = {"content": "Invalid update attempt"}
+        response = self.client.put(url, data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_update_message_with_invalid_data(self):
+        url = reverse("message-detail", kwargs={"pk": self.message1.pk})
+
+        data = {"content": "Updated message", "edited": False}
+        response = self.client.put(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class PartialUpdateMessageTestCase(MessageBaseTestCase):
+    def test_partial_update_message_as_sender(self):
+        url = reverse("message-detail", kwargs={"pk": self.message1.pk})
+        data = {"content": "Updated message"}
+        response = self.client.patch(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.message1.refresh_from_db()
+        self.assertEqual(self.message1.content, "Updated message")
+        self.assertTrue(self.message1.edited)
+
+    def test_partial_update_message_as_non_sender(self):
+        self.client.force_authenticate(user=self.user2)
+        url = reverse("message-detail", kwargs={"pk": self.message1.pk})
+        data = {"content": "Invalid update attempt"}
+        response = self.client.patch(url, data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_partial_update_message_with_invalid_data(self):
+        url = reverse("message-detail", kwargs={"pk": self.message1.pk})
+
+        data = {"content": "Updated message", "edited": False}
+        response = self.client.patch(url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class MessageDeleteViewTests(MessageBaseTestCase):
+    def test_delete_message_as_sender(self):
+        url = reverse("message-detail", kwargs={"pk": self.message1.id})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Message.objects.filter(id=self.message1.id).exists())
+
+    def test_delete_message_as_non_sender(self):
+        self.client.force_authenticate(user=self.user2)
+        url = reverse("message-detail", kwargs={"pk": self.message1.id})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
 class ListMessagesWithUserTestCase(MessageBaseTestCase):

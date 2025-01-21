@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Case, When, Max, Q, F
+from django.db.models import Case, F, Max, Q, When
 from listings.models import Listing
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -19,6 +19,11 @@ class MessageViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        user = self.request.user
+        # If not performing list action, queryset should be any message that involves the user
+        if self.action != "list":
+            return Message.objects.filter(Q(sender=user) | Q(receiver=user))
+
         # Show most recent message for each unique (reciever, related_listing) pair
         latest_messages = (
             Message.objects.filter(
@@ -56,6 +61,20 @@ class MessageViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # Set sender to currently authenticated user
         serializer.save(sender=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        # Extract only message content from request data
+        partial_data = {"content": request.data.get("content")}
+        if "content" not in request.data or len(request.data) > 1:
+            raise PermissionDenied("Only the 'content' field can be updated.")
+
+        # Update message manually
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=partial_data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
 
     def perform_update(self, serializer):
         # Only the sender can modify their message
