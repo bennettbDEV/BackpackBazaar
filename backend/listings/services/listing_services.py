@@ -1,6 +1,7 @@
 from django.db import transaction
 
 from listings.models import Listing, Tag
+from listings.tasks import generate_tags
 
 
 class ListingService:
@@ -16,9 +17,12 @@ class ListingService:
             image=image,
         )
 
+        generate_tags(title, description)
+        """
         for tag_name in tags:
             tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
             listing.tags.add(tag)
+        """
 
         return listing
 
