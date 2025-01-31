@@ -3,7 +3,7 @@ from .models import Listing
 
 
 class ListingSerializer(serializers.ModelSerializer):
-    tags = serializers.CharField(write_only=True)
+    tags = serializers.CharField(write_only=True, required=False)
     tags_out = serializers.SerializerMethodField()
 
     class Meta:

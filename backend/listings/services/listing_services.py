@@ -17,7 +17,7 @@ class ListingService:
             image=image,
         )
 
-        generate_tags(title, description)
+        generate_tags(listing.id, title, description)
         """
         for tag_name in tags:
             tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
