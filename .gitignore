@@ -3,6 +3,7 @@
 **env
 **node_modules
 **tmp
+**.json
 .env
 backend/db.sqlite3
 backend/db.sqlite3
