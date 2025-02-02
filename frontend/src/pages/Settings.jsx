@@ -17,6 +17,7 @@ function Settings() {
     const [loading, setLoading] = useState(false);
     const [blockedUsers, setBlocked] = useState([]);
     
+    console.log("blocked:", blockedUsers)
 
     const navigate = useNavigate();
     const userId = userData ? userData.id : -1;
@@ -37,7 +38,7 @@ function Settings() {
         try {
             const response = await retryWithExponentialBackoff(() =>
                 api.get("/api/users/list_blocked_users/"));
-            setBlocked(response.data.blocked || []);
+            setBlocked(response.data || []);
         } catch (err) {
             console.error("Error fetching blocked users:", err);
         } finally {

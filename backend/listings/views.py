@@ -7,6 +7,7 @@ from rest_framework.response import Response
 
 from .models import Listing, SavedListing
 from .serializers import ListingSerializer
+from .tasks import generate_tags
 from .services.listing_services import ListingService
 
 
@@ -51,7 +52,7 @@ class ListingViewSet(viewsets.ModelViewSet):
             [AllowAny] if (self.action in ["list", "retrieve"]) else [IsAuthenticated]
         )
         return super().get_permissions()
-
+    
     def create(self, request):
         request_data = request.data
         request_data["author_id"] = request.user
@@ -60,7 +61,8 @@ class ListingViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
 
-        tags = validated_data.pop("tags", [])
+        #tags = validated_data.pop("tags", [])
+        tags = ""
         listing = ListingService.create_listing(
             author_id=request.user,
             title=validated_data["title"],

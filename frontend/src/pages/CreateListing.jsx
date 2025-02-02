@@ -131,7 +131,7 @@ function CreateListing() {
                             required
                         ></textarea>
 
-                        <label><red>*</red> Tags</label>
+                        <label>Tags</label>
                         <div className="tags-input-container">
                             <input
                                 className="form-input"

@@ -1,6 +1,7 @@
 from django.db import transaction
 
 from listings.models import Listing, Tag
+from listings.tasks import generate_tags
 
 
 class ListingService:
@@ -15,10 +16,14 @@ class ListingService:
             price=price,
             image=image,
         )
+        # For now we will ignore user given tags - we can make them read only later
 
+        generate_tags(listing.id, title, description)
+        """
         for tag_name in tags:
             tag, _ = Tag.objects.get_or_create(tag_name=tag_name)
             listing.tags.add(tag)
+        """
 
         return listing
 
@@ -38,10 +43,13 @@ class ListingService:
         listing.price = price
         listing.image = image
         listing.tags.clear()
+        generate_tags(listing.id, title, description)
+        """
         for tag_name in tags:
             tag, _ = Tag.objects.get_or_create(tag_name=tag_name.strip())
             listing.tags.add(tag)
-        
+        """
+
         listing.save()
         return listing
 
@@ -67,11 +75,14 @@ class ListingService:
             listing.price = price
         if image:
             listing.image = image
-        if tags:
+        if title or description:
             listing.tags.clear()
+            generate_tags(listing.id, title, description)
+            """
             for tag_name in tags:
                 tag, _ = Tag.objects.get_or_create(tag_name=tag_name.strip())
                 listing.tags.add(tag)
+            """
         
         listing.save()
         return listing

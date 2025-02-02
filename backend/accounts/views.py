@@ -22,8 +22,22 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         try:
-            serializer = self.get_serializer(data=request.data)
+            request_data = request.data.dict()
+            location =  request_data.pop("location", None)
+            image =  request.FILES.get("image", None)
+
+            # If the profile field is not given, check if the location or image is given directly
+            if request_data.get("profile") is None and (location is not None or image is not None):
+                profile = {}
+                if location is not None:
+                    profile["location"] = location
+                if image is not None:
+                    profile["image"] = image
+                request_data["profile"] = profile
+
+            serializer = self.get_serializer(data=request_data)
             serializer.is_valid(raise_exception=True)
+
             user = UserService.create_user(**serializer.validated_data)
             user_data = self.get_serializer(user).data
 
