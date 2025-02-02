@@ -17,6 +17,7 @@ function Listing({ listing, additionalAction }) {
     const [likes, setLikes] = useState(listing.likes || 0);
     const [dislikes, setDislikes] = useState(listing.dislikes || 0);
     const formattedDate = new Date(listing.created_at).toLocaleDateString("en-US");
+    const description_snippet = listing.description.length > 59 ? listing.description.slice(0, 59) + "..." : listing.description;
 
     // Image URL
     const imageUrl = listing.image ? listing.image : null;
@@ -43,7 +44,7 @@ function Listing({ listing, additionalAction }) {
             <Link to={`/listings/${listing.id}`} className="listing-link">
                 <h2 className="listing-title">{listing.title}</h2>
                 <p className="listing-condition">Condition: {fullCondition}</p>
-                <p className="listing-description">Description: {listing.description}</p>
+                <p className="listing-description">Description: {description_snippet}</p>
                 <p className="listing-price">Price: ${listing.price}</p>
 
                 <div className="listing-image">
