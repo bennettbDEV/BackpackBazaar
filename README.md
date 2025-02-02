@@ -21,7 +21,7 @@ This project, Backpack Bazaar, is an extension of a group project I worked on pr
 - [ ] Add tests for every feature
 - [X] Frontend Integration
 - [ ] Test Frontend more thoroughly
-- [ ] Add automatic listing classification
+- [X] Add automatic listing classification
 - [ ] Develop algorithm to suggest listings
 
 ## Try it out!
