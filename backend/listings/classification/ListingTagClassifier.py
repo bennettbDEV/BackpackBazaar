@@ -169,7 +169,7 @@ def main():
     lc = ListingTagClassifier()
     
     # Enable train if you want to retrain the model
-    train = False
+    train = True
 
     # If trained model doesnt exist yet, train it
     if lc.load_model() is not None or train is True:

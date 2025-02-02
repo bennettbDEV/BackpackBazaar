@@ -8,7 +8,7 @@ def add_listing_tags(listing_id: int, tags: list[str]):
     # This task executes queries. Once the task finishes, the connection
     # will be closed.
     try:
-            listing = Listing.objects.get(id=listing_id)
+        listing = Listing.objects.get(id=listing_id)
     except Exception as e:
         print("Automatic addition of listing tags failed", e)
         return False

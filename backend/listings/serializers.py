@@ -32,7 +32,7 @@ class ListingSerializer(serializers.ModelSerializer):
         ]
 
     def get_tags_out(self, obj):
-        return [tag.tag_name for tag in obj.tags.all()]
+        return [tag.tag_name.capitalize() for tag in obj.tags.all()]
     
     def validate_tags(self, value):
         return [tag.strip() for tag in value.split(',') if tag.strip()]

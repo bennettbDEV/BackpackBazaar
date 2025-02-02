@@ -61,7 +61,8 @@ class ListingViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
 
-        tags = validated_data.pop("tags", [])
+        #tags = validated_data.pop("tags", [])
+        tags = ""
         listing = ListingService.create_listing(
             author_id=request.user,
             title=validated_data["title"],
