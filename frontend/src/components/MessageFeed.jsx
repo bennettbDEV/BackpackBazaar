@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../api";
 import ChatMessage from "./ChatMessage";
 import testImg from "../assets/usericon.png";
@@ -79,9 +80,9 @@ function MessageFeed({ userId, listingId }) {
 		<div className="message-feed-view">
 			<div className="message-feed-header">
 
-				
 
-				<div className="header-right">
+
+				<div className="header-left">
 					{userDetails ? (
 						<>
 							<img src={userImageUrl} alt="User" width="25" />
@@ -92,14 +93,16 @@ function MessageFeed({ userId, listingId }) {
 					)}
 				</div>
 
-				<div className="header-left">
+				<div className="header-right">
 					{listingDetails ? (
 						<>
-							<img src={listingDetails.image} alt="Listing" width="25"/>
-							<div className="listing-details">
-								<span className="listing-title">{listingDetails.title}</span>
-								<span className="listing-price">${listingDetails.price}</span>
-							</div>
+							<Link to={`/listings/${listingId}`} className="listing-detail-link">
+								<img src={listingDetails.image} alt="Listing" width="25" />
+								<div className="listing-details">
+									<span className="listing-title">{listingDetails.title}</span>
+									<span className="listing-price">${listingDetails.price}</span>
+								</div>
+							</Link>
 						</>
 					) : (
 						<span>Loading listing...</span>

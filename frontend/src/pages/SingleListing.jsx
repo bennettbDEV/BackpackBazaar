@@ -108,7 +108,7 @@ const SingleListing = () => {
                 <h1>Listing Details</h1>
                 <div className="content-wrapper">
                     <div className="listing-section">
-                    <Listing listing={listing} />
+                    <Listing listing={listing} useFullDesc={true} />
                     </div>
 
                     {author ? (

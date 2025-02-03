@@ -1,3 +1,10 @@
+.listing-detail-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
 .message-feed-content {
     flex-grow: 1;
     display: flex;
@@ -43,18 +50,19 @@
 .listing-title {
     font-size: 1rem;
     font-weight: 600;
-    margin:0px;
+    margin: 0px;
 }
 
 .listing-price {
     font-size: 0.9rem;
-    margin:0px;
+    margin: 0px;
 }
 
-.header-right, .header-left {
+.header-right,
+.header-left {
     display: flex;
     align-items: center;
-    font-size:1.5rem;
+    font-size: 1.5rem;
 }
 
 .new-message {
@@ -65,12 +73,12 @@
 .new-message input {
     flex-grow: 1;
     padding: 0.5rem;
-    border: 1px solid var(--text-color);
+    border: 1px solid var(--bg-highlight);
     border-radius: 5px;
     margin-right: 0.5rem;
     background-color: var(--bg-color);
     color: var(--text-color);
-    margin:auto;
+    margin: auto;
 }
 
 .new-message button {
@@ -80,7 +88,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-left:0.5rem;
+    margin-left: 0.5rem;
 }
 
 .new-message button:hover {

@@ -12,7 +12,7 @@ const conditionMapping = {
     "RD": "Refurbished"
 };
 
-function Listing({ listing, additionalAction }) {
+function Listing({ listing, additionalAction, useFullDesc }) {
     const [imageError, setImageError] = useState(false); // Track if the image fails to load
     const [likes, setLikes] = useState(listing.likes || 0);
     const [dislikes, setDislikes] = useState(listing.dislikes || 0);
@@ -44,7 +44,7 @@ function Listing({ listing, additionalAction }) {
             <Link to={`/listings/${listing.id}`} className="listing-link">
                 <h2 className="listing-title">{listing.title}</h2>
                 <p className="listing-condition">Condition: {fullCondition}</p>
-                <p className="listing-description">Description: {description_snippet}</p>
+                <p className="listing-description">Description: {useFullDesc ? listing.description : description_snippet}</p>
                 <p className="listing-price">Price: ${listing.price}</p>
 
                 <div className="listing-image">

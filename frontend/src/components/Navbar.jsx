@@ -20,7 +20,7 @@ const Navbar = () => {
           <img src={homeIcon}
             //alt="Home" 
             className="home-icon" /> {/* Home Icon */}
-          ISU Marketplace
+          Backpack Bazaar
         </a>
       </div>
       <div className="navbar-center">

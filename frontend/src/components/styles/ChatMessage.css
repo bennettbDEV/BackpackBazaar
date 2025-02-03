@@ -15,7 +15,7 @@
 
 .other {
     align-self: flex-start;
-    background-color: var(--bg-highlight);
+    background-color: var(--other-message);
     color: var(--alt-text-color);
 }
 
