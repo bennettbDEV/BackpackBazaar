@@ -104,6 +104,11 @@ class UserViewSet(viewsets.ModelViewSet):
                 {"detail": "User is already blocked."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        elif blocked_user == request.user:
+            return Response(
+                {"detail": "You can't block yourself."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         UserBlock.objects.create(user=request.user, blocked_user=blocked_user)
         return Response(
             {"detail": "User blocked successfully."}, status=status.HTTP_201_CREATED
