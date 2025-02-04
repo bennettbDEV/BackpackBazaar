@@ -1,5 +1,6 @@
 // SingleListing.jsx
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api";
 import { useParams } from "react-router-dom";
 import Listing from "../components/Listing";
@@ -14,6 +15,7 @@ const SingleListing = () => {
     const [isBlocked, setIsBlocked] = useState(null); // Local block state
     const [imageError, setImageError] = useState(false); // Track image loading error
     const [formData, setFormData] = useState({ content: "" });
+    const navigate = useNavigate();
 
     const fallbackImage = "/fallback-author-image.png";
 
@@ -95,6 +97,7 @@ const SingleListing = () => {
             });
             setFormData({ content: "" });
             alert("Message sent successfully");
+            navigate("/messages");
         } catch (error) {
             console.error("Error sending message:", error);
             alert("Failed to send message.");
