@@ -19,7 +19,7 @@ Including another URLconf
 """
 
 from accounts.views import UserViewSet
-from api.views import LoginView, ServeImageView
+from api.views import ServeImageView
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
@@ -41,18 +41,20 @@ router.register(r"messages", MessageViewSet, basename="message")
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("favicon.ico", RedirectView.as_view(url="/static/favicon.ico")),
+
     # REST API Documentation views
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path("swagger/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
     path("redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
+
     # Authentication
     # api/token/ is used for logging in, token/refresh/ is used to refresh access token
-    # path("api/token/", LoginView.as_view(), name="get_token"),
     path("api/token/", TokenObtainPairView.as_view(), name="get_token"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="refresh"),
+
     # Main api urls
-    # path("api/", include("api.urls")),
     path("api/", include(router.urls)),
+    
     # Media urls - this will provide images for any objects such as listings or users
     path("media/<path:image_path>/", ServeImageView.as_view(), name="serve_image"),
     path(
