@@ -161,13 +161,18 @@ class ListMessagesWithUserTestCase(MessageBaseTestCase):
     def test_with_user_action(self):
         url = reverse("message-with-user")
         response = self.client.get(
-            url, {"user": self.user2.id, "listing": self.listing.id}
+            url, {"user": self.user2.id, "listing": self.listing.id, "page": 1}
         )
+        message_results = response.data.get("results")
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
         messages = Message.objects.filter(
             related_listing=self.listing, sender=self.user1, receiver=self.user2
         ) | Message.objects.filter(
             related_listing=self.listing, sender=self.user2, receiver=self.user1
         )
-        serializer = MessageSerializer(messages.order_by("created_at"), many=True)
-        self.assertEqual(response.data, serializer.data)
+        
+        # We want to check the top 25 messages, as each page has 25 items
+        serializer = MessageSerializer(messages.order_by("-created_at")[:25], many=True)
+        self.assertEqual(message_results, serializer.data)
