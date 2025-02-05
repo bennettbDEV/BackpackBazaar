@@ -37,6 +37,12 @@ router = DefaultRouter()
 router.register(r"users", UserViewSet, basename="user")
 router.register(r"listings", ListingViewSet, basename="listing")
 router.register(r"messages", MessageViewSet, basename="message")
+""" The router creates the following urlpatterns + any extra actions defined in the view:
+- listings/,  name='listing-list'
+- listings/<int:pk>/, name='listing-detail'
+- users/,  name='user-list'
+- users/<int:pk>/, name='user-detail'
+"""
 
 urlpatterns = [
     path("admin/", admin.site.urls),

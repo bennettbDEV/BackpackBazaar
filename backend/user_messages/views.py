@@ -5,6 +5,7 @@ from listings.models import Listing
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -134,7 +135,16 @@ class MessageViewSet(viewsets.ModelViewSet):
                 (models.Q(sender=self.request.user) & models.Q(receiver=other_user))
                 | (models.Q(sender=other_user) & models.Q(receiver=self.request.user))
             )
-        ).order_by("created_at")
+        ).order_by("-created_at")
+
+        # Create pagination class for this method alone
+        paginator = PageNumberPagination()
+        paginator.page_size = 25 # 25 messages at a time
+
+        page = paginator.paginate_queryset(messages, request)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(messages, many=True)
         return Response(serializer.data)

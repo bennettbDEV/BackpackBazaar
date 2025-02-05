@@ -65,6 +65,25 @@
     font-size: 1.5rem;
 }
 
+
+.load-more-container {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.load-more-container button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.load-more-container button:hover {
+    background-color: #0056b3;
+}
+
 .new-message {
     display: flex;
     padding: 0.5rem;
