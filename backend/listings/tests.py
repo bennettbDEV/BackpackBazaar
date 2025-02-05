@@ -15,40 +15,36 @@ from .serializers import ListingSerializer
 class ListingBaseTestCase(APITestCase):
     """Base test class providing setup for listing-related tests."""
 
-    @classmethod
-    def setUpTestData(cls):
-        cls.client = APIClient()
-        cls.user = User.objects.create_user(username="testuser", password="testpass")
-        cls.client.force_authenticate(user=cls.user)
-
-        cls.test_image = cls._retrieve_test_image()
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(username="testuser", password="testpass")
+        self.client.force_authenticate(user=self.user)
 
         # Create example tags
-        cls.tag1 = Tag.objects.create(tag_name="Tag1")
-        cls.tag2 = Tag.objects.create(tag_name="Tag2")
+        self.tag1 = Tag.objects.create(tag_name="Tag1")
+        self.tag2 = Tag.objects.create(tag_name="Tag2")
 
         # Listing data template
-        cls.valid_listing_data = {
+        self.valid_listing_data = {
             "title": "Sample Listing",
             "condition": "MW",
             "description": "A sample description.",
             "price": 101.0,
             "tags": ["Tag1", "Tag2"],
         }
-        cls.valid_listing_data["image"] = cls.test_image
+        self.valid_listing_data["image"] = self._retrieve_test_image()
 
-        cls.listing = Listing.objects.create(
+        self.listing = Listing.objects.create(
             title="Sample Listing 0",
             condition="FN",
             description="A sample description.",
             price=100.0,
-            image=cls.test_image,
-            author_id=cls.user,
+            image=self._retrieve_test_image(),
+            author_id=self.user,
         )
-        cls.listing.tags.set([cls.tag1, cls.tag2])
+        self.listing.tags.set([self.tag1, self.tag2])
 
-    @classmethod
-    def _retrieve_test_image(cls):
+    def _retrieve_test_image(self):
         image_path = os.path.join(settings.BASE_DIR, "media", "tests", "test_image.jpg")
         # Only create image if it doesnt exist
         if not os.path.exists(image_path):
@@ -133,7 +129,7 @@ class ListAndFilterListingsTestCase(ListingBaseTestCase):
             condition="MW",
             description="Another sample.",
             price=50.0,
-            image=self.test_image,
+            image=self._retrieve_test_image(),
             author_id=self.user,
         )
         response = self.client.get(reverse("listing-list") + "?ordering=price")
