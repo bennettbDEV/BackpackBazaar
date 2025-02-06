@@ -41,6 +41,18 @@ Some notable new features include:
 - Each endpoint was designed with robust error handling, with specific and detailed responses for various different issues
 - Critical use cases were thoroughly tested with comprehensive unit tests and integration tests to ensure both reliability and security
 
+<br/>
+<br/>
+
+**Image Showcase**
+
+Here are some additional screenshots showing different pages from our frontend:
+<div>
+  <a>
+    <img src="README_Images/revamped_messaging_page.jpg" alt="Revamped Messaging Page">
+  </a>
+</div>
+
 ## Roadmap
 
 - [X] Add dark mode
