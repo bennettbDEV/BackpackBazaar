@@ -9,7 +9,7 @@ This project, Backpack Bazaar, is an extension of a group project I worked on pr
 <br>
 
 <div align="center">
-  <a href="https://github.com/bennettbDEV/CollegeMarketplace">
+  <a href="https://github.com/bennettbDEV/BackpackBazaar">
     <img src="README_Images/homepage_example.jpg" alt="Home Page">
   </a>
 </div>
@@ -27,9 +27,9 @@ Our project includes all the vital features of an online marketplace, and more! 
 
 ### Expanded Features
 Backpack Bazaar is not only more efficient, but is also more feature rich than the original College Marketplace!
-Some notable features include:
+Some notable new features include:
 
-- Automatic tag generation when creating or updating listings (using a One-vs-rest SVC)
+- Automatic tag generation when creating or updating listings (using a One-vs-rest [SVC](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html))
 - Reworked messages on the backend, allowing for specific conversations for each listing
 - Frontend Changes
     - Implemented Dark mode
