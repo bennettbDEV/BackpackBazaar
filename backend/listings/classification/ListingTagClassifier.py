@@ -17,7 +17,7 @@ class ListingTagClassifier:
             "english", "math", "science", "social studies", "history", "music", "biology", "chemistry", 
             "composition", "health", "speech", "physical education", "computer science", "business", "psychology", 
             "spanish", "chinese", "japanese", "russian", "french", "pen", "pencil", "paper", "notebook", "drawing", 
-            "art", "textbook", "book", "tech", "computer", "calculator", "marker", "highlighter", 
+            "art", "textbook", "book", "tech", "computer", "calculator", "marker", 
             "writing", "dry-erase", "laptop", "keyboard", "mouse", "headphones", "airpods", "earbuds", "desktop", 
             "mini-fridge", "furniture", "shelf", "table", "pet", "manga", "silverware", "kitchen", "decoration",
             "chair", "desk", "speaker", "clothing", "backpack", "videogame", "tv", "bag", "entertainment",

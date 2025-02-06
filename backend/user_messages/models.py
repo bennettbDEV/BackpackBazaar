@@ -10,8 +10,9 @@ class Message(models.Model):
     edited = models.BooleanField(default=False)
 
     # If the related listing is deleted, set reference to -1 to indicate it no longer exists
+    # Changing on_delte to cascade for the sake of simplicity, but we can change that later
     related_listing = models.ForeignKey(
-        Listing, on_delete=models.SET(-1), related_name="related_messages"
+        Listing, on_delete=models.CASCADE, related_name="related_messages"
     )
     # Tentative "on_delete=models.CASCADE" - should messages stay after user is deleted?
     sender = models.ForeignKey(

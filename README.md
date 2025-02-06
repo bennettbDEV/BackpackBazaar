@@ -1,10 +1,45 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-This project, Backpack Bazaar, is an extension of a group project I worked on previously -> https://github.com/bennettbDEV/CollegeMarketplace. The goal of this project will be to: 
+This project, Backpack Bazaar, is an extension of a group project I worked on previously -> https://github.com/bennettbDEV/CollegeMarketplace. The goal of this project is to: 
 - Refactor the backend to use Django's ORM, which will be faster and more reliable
 - Add more customization options
 - Implement automatic listing classification using AI/ML
 - Develop an algorithm/method to provide suggested/recommended listings to users
+
+<br>
+
+<div align="center">
+  <a href="https://github.com/bennettbDEV/CollegeMarketplace">
+    <img src="README_Images/homepage_example.jpg" alt="Home Page">
+  </a>
+</div>
+With the abundance of irrelevant and distant listings on classified advertising platforms such as Facebook Marketplace and Craigslist,
+our team decided to develop an open-source marketplace platform tailored to students. To achieve this goal and learn as much as possible about
+critical tools in the software industry, we chose to develop the platform using Django Rest Framework (Python) for the backend API, and React + Vite (JavaScript/JSX) for the frontend. 
+
+## Features
+Our project includes all the vital features of an online marketplace, and more! Some of our notable features & details are below:
+- Secure authentication using JSON Web Tokens (JWT)
+- Comprehensive account management: creation, retrieval, updates, and deletion
+- Listing management with filtering, searching, sorting, and saving for later access
+- Messaging capabilities: sending, retrieving, and deleting messages
+- User interaction features: liking/disliking listings and blocking/unblocking other users
+
+### Expanded Features
+Backpack Bazaar is not only more efficient, but is also more feature rich than the original College Marketplace!
+Some notable features include:
+
+- Automatic tag generation when creating or updating listings (using a One-vs-rest SVC)
+- Reworked messages on the backend, allowing for specific conversations for each listing
+- Frontend Changes
+    - Implemented Dark mode
+    - Improved accessibility features & styling
+    - Fixed various bugs
+    - Completely rehauled the messaging page
+<h4>Details</h4>
+
+- Each endpoint was designed with robust error handling, with specific and detailed responses for various different issues
+- Critical use cases were thoroughly tested with comprehensive unit tests and integration tests to ensure both reliability and security
 
 ## Roadmap
 
