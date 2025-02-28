@@ -34,6 +34,9 @@ class UserViewSet(viewsets.ModelViewSet):
                 if image is not None:
                     profile["image"] = image
                 request_data["profile"] = profile
+            elif request_data.get("profile") is None:
+                # If profile is none and location and image are none then just create blank profile
+                request_data["profile"] = None
 
             serializer = self.get_serializer(data=request_data)
             serializer.is_valid(raise_exception=True)
