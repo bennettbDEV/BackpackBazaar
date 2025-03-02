@@ -72,6 +72,20 @@ class UpdateAccountTestCase(BaseUserTestCase):
         self.assertEqual(self.user1.email, "newuseremail@example.com")
         self.assertEqual(self.user1.profile.location, "Partially Updated Location")
 
+    def test_update_other_account_partial(self):
+        # Log into user2 then try and update user1
+        self.client.logout()
+        self.client.force_authenticate(user=self.user2)
+
+        url = reverse("user-detail", kwargs={"pk": self.user1.pk})
+        data = {
+            "username": "updated_user1",
+            "email": "newuseremail@example.com",
+            "location": "Partially Updated Location",
+        }
+        response = self.client.patch(url, data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
 
 class DeleteAccountTestCase(BaseUserTestCase):
     def test_delete_account(self):
@@ -122,7 +136,12 @@ class UnblockUserTestCase(BaseUserTestCase):
     def test_unblock_user_success(self):
         # First block user2
         block_url = reverse("user-block-user", kwargs={"pk": self.user2.pk})
-        self.client.post(block_url)
+        block_response = self.client.post(block_url)
+        self.assertEqual(block_response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(
+            UserBlock.objects.filter(user=self.user1, blocked_user=self.user2).exists()
+        )
+
         # Now unblock user2
         unblock_url = reverse("user-unblock-user", kwargs={"pk": self.user2.pk})
         response = self.client.post(unblock_url)
@@ -139,8 +158,15 @@ class UnblockUserTestCase(BaseUserTestCase):
 
 class IsUserBlockedTestCase(BaseUserTestCase):
     def test_is_user_blocked_true(self):
+        # First block user2
         block_url = reverse("user-block-user", kwargs={"pk": self.user2.pk})
-        self.client.post(block_url)
+        block_response = self.client.post(block_url)
+        self.assertEqual(block_response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(
+            UserBlock.objects.filter(user=self.user1, blocked_user=self.user2).exists()
+        )
+
+        # Not test if user2 is blocked
         url = reverse("user-is-user-blocked", kwargs={"pk": self.user2.pk})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -157,9 +183,15 @@ class ListBlockedUsersTestCase(BaseUserTestCase):
     def test_list_blocked_users(self):
         # Block user2 and verify that list returns it
         block_url = reverse("user-block-user", kwargs={"pk": self.user2.pk})
-        self.client.post(block_url)
+        block_response = self.client.post(block_url)
+        self.assertEqual(block_response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(
+            UserBlock.objects.filter(user=self.user1, blocked_user=self.user2).exists()
+        )
+
         url = reverse("user-list-blocked-users")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
         blocked_ids = [user["id"] for user in response.data]
         self.assertIn(self.user2.pk, blocked_ids)
