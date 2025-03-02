@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from accounts.services.user_services import UserService
+from accounts.models import UserProfile
 
 from accounts.models import UserBlock
 from .serializers import UserSerializer
@@ -79,7 +80,9 @@ class UserViewSet(viewsets.ModelViewSet):
         user = UserService.update_user(instance.id, **serializer.validated_data)
 
         # Update specific profile fields if given (if they werent nested in profile)
-        profile = instance.profile
+        # We use get_or_create to deal with edge case where user somehow doesnt have a profile
+        profile, created = UserProfile.objects.get_or_create(user=instance, defaults={"location": "", "image": None})
+
         if profile:
             # Explicit check for fields to be "None"
             if location is not None:

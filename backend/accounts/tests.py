@@ -23,7 +23,7 @@ class BaseUserTestCase(APITestCase):
 
 
 class CreateAccountTestCase(BaseUserTestCase):
-    def test_create_account(self): # With email
+    def test_create_account(self):  # With email
         # We should be unauthenticated to simulate new user
         self.client.logout()
         url = reverse("user-list")
@@ -43,24 +43,33 @@ class CreateAccountTestCase(BaseUserTestCase):
 class UpdateAccountTestCase(BaseUserTestCase):
     def test_update_account_basic(self):
         url = reverse("user-detail", kwargs={"pk": self.user1.pk})
-        data = {
-            "username": "updated_user1",
-            "password": "password123"
-        }
+        data = {"username": "updated_user1", "password": "password1234"}
         response = self.client.put(url, data)
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # Reload from DB and check that the profile was updated.
+        # Reload from DB and check that user was updated successfully
         self.user1.refresh_from_db()
-        # This assumes you have a one-to-one profile with a location field.
-        self.assertEqual(self.user1.profile.location, "Updated Location")
+        self.assertEqual(self.user1.username, "updated_user1")
 
-    def test_update_account_partial(self):
+    def test_update_account_basic_partial(self):
         url = reverse("user-detail", kwargs={"pk": self.user1.pk})
         data = {"location": "Partially Updated Location"}
         response = self.client.patch(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.user1.refresh_from_db()
+        self.assertEqual(self.user1.profile.location, "Partially Updated Location")
+
+    def test_update_account_partial(self):
+        url = reverse("user-detail", kwargs={"pk": self.user1.pk})
+        data = {
+            "username": "updated_user1",
+            "email": "newuseremail@example.com",
+            "location": "Partially Updated Location",
+        }
+        response = self.client.patch(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.user1.refresh_from_db()
+        self.assertEqual(self.user1.username, "updated_user1")
+        self.assertEqual(self.user1.email, "newuseremail@example.com")
         self.assertEqual(self.user1.profile.location, "Partially Updated Location")
 
 
