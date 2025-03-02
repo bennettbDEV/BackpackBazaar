@@ -59,13 +59,13 @@ Here are some additional screenshots showing different pages from our frontend:
 - [X] Refactor front-end to use rems instead of px
 - [X] Refactor authentication using Django's built in tools
 - [X] Alter User/UserProfile to use Django's ORM
-- [ ] Test User/UserProfile
+- [X] Test User/UserProfile
 - [X] Alter Listing to use Django's ORM
 - [X] Test Listing
 - [X] Alter Messages to use Django's ORM
 - [X] Test Messages
 - [X] New message frontend
-- [ ] Add tests for every feature
+- [X] Add tests for every feature
 - [X] Frontend Integration
 - [ ] Test Frontend more thoroughly
 - [X] Add automatic listing classification
