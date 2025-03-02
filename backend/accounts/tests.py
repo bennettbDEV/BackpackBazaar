@@ -80,6 +80,22 @@ class DeleteAccountTestCase(BaseUserTestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(User.objects.filter(pk=self.user1.pk).exists())
 
+    def test_delete_account_unauthenticated(self):
+        self.client.logout()
+        url = reverse("user-detail", kwargs={"pk": self.user1.pk})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertTrue(User.objects.filter(pk=self.user1.pk).exists())
+
+    def test_delete_other_account(self):
+        # Log into user2 then try and delete user1
+        self.client.logout()
+        self.client.force_authenticate(user=self.user2)
+        url = reverse("user-detail", kwargs={"pk": self.user1.pk})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertTrue(User.objects.filter(pk=self.user1.pk).exists())
+
 
 class BlockUserTestCase(BaseUserTestCase):
     def test_block_user_success(self):

@@ -56,7 +56,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
             return Response(user_data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            print(str(e))
+            return Response({"error": "An error occured"}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = False
@@ -69,6 +70,9 @@ class UserViewSet(viewsets.ModelViewSet):
     def _update_profile(self, request, *args, **kwargs):
         partial = kwargs.pop("partial", False)
         instance = self.get_object()
+
+        if request.user != instance:
+            return Response({"error": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN)
 
         # Grab profile fields from request data
         location = request.data.get("location", None)
@@ -96,6 +100,10 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
+
+        if request.user != instance:
+            return Response({"error": "Invalid credentials"}, status=status.HTTP_403_FORBIDDEN)
+        
         UserService.delete_user(instance.id)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
