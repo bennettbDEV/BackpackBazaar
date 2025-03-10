@@ -50,6 +50,8 @@ Here are some additional screenshots showing different pages from our frontend:
 <div>
   <a>
     <img src="README_Images/revamped_messaging_page.jpg" alt="Revamped Messaging Page">
+    <img src="README_Images/single_listing_page.png" alt="Single Listing Page">
+    <img src="README_Images/saved_listings_page.png" alt="Saved Listing Page">
   </a>
 </div>
 
